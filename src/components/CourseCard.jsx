@@ -1,21 +1,30 @@
+import { motion } from 'framer-motion';
+import { div } from 'framer-motion/client';
 import React from 'react';
+import { Link } from 'react-router';
 
-const CourseCard = () => (
-  <div className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-    <img
-      src="https://source.unsplash.com/400x250/?education,course"
-      alt="Course"
-      className="w-full h-48 object-cover"
-    />
-    <div className="p-4">
-      <h3 className="text-lg font-semibold mb-2">React for Beginners</h3>
-      <p className="text-gray-600 text-sm mb-4">
-        Learn the basics of React.js and build modern web apps.
-      </p>
-      <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-        View Details
-      </button>
-    </div>
+const CourseCard = ({ c }) => (
+  <div>
+    <motion.div
+      key={c._id}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ delay: c * 0.1 }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300"
+    >
+      <img src={c.image} alt="Course" className="w-full h-48 object-cover" />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-2">{c.title}</h3>
+        <p className="text-gray-600 text-sm mb-3">{c.description}</p>
+        <Link
+          to={`/course-details/${c._id}`}
+          className="bg-indigo-600 text-white py-2 w-full px-4 rounded-md hover:bg-indigo-700 transition text-sm"
+        >
+          View Details
+        </Link>
+      </div>
+    </motion.div>
   </div>
 );
 

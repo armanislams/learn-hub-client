@@ -5,7 +5,7 @@ import { AuthContext } from "../Provider/AuthContext";
 import { toast } from "react-toastify";
 
 const Register = () => {
-  const { createUser, setUser, updateUser, GoogleLogin, resetPass } =
+  const { createUser, setUser, updateUser, GoogleLogin } =
     use(AuthContext);
   const navigate = useNavigate();
 

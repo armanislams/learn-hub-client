@@ -1,8 +1,7 @@
-// src/pages/CourseDetails.jsx
-import React, { use, useEffect, useState } from "react";
+
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import useAxios from "../hooks/UseAxios";
-import AuthProvider from "../Provider/AuthProvider";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -26,7 +25,9 @@ const CourseDetails = () => {
       await AxiosInstance.post(`/enrollments`, { courseId: id });
       toast.success("Enrolled successfully!");
     } catch (err) {
-      toast.error("Enrollment failed.");
+        toast.error("Enrollment failed.");
+        console.log(err);
+        
     }
   };
 

@@ -13,6 +13,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         Component: Root,
+        // errorElement: <ErrorPage/>,
         children: [
             {
                 index: true,
@@ -23,10 +24,10 @@ const router = createBrowserRouter([
                 Component: ErrorPage
             },
             {
-                path: '/all-course',
-                element: <PrivateRoute>
-                    <AllCourses></AllCourses>
-                </PrivateRoute>
+                // path: '/all-course',
+                // element: <PrivateRoute>
+                //     <AllCourses></AllCourses>
+                // </PrivateRoute>
 
             },
             {
