@@ -6,12 +6,12 @@ import { ToastContainer } from 'react-toastify';
 
 const Root = () => {
     return (
-        <div>
-            <Header></Header>
-            <Outlet></Outlet>
-            <Footer></Footer>
-            <ToastContainer></ToastContainer>
-        </div>
+      <div className="bg-indigo-600">
+        <Header></Header>
+        <Outlet></Outlet>
+        <Footer></Footer>
+        <ToastContainer></ToastContainer>
+      </div>
     );
 };
 

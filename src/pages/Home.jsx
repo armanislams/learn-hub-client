@@ -65,7 +65,7 @@ const Home = () => {
                   <h3 className="text-lg font-semibold mb-2">{c.title}</h3>
                   <p className="text-gray-600 text-sm mb-3">{c.description}</p>
                   <Link
-                    to={`/course-details/${_id}`}
+                    to={`/course-details/${c._id}`}
                     className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition text-sm"
                   >
                     View Details

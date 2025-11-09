@@ -1,32 +1,36 @@
 // src/pages/CourseDetails.jsx
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import React, { use, useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useAxios from "../hooks/UseAxios";
+import AuthProvider from "../Provider/AuthProvider";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
-const CourseDetails = ({ user }) => {
-  const { id } = useParams();
+const CourseDetails = () => {
+    const AxiosInstance = useAxios()
+    const {id} = useParams()
+
+    
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-
-      .get(`/courses/${id}`)
-      .then((res) => setCourse(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, [id]);
+    AxiosInstance.get(`/course/${id}`)
+        .then(data => {
+            setCourse(data.data)
+            setLoading(false)
+    })
 
   const enroll = async () => {
     try {
       // backend handles enrolling user by token
-      await api.post(`/enrollments`, { courseId: id });
+      await AxiosInstance.post(`/enrollments`, { courseId: id });
       toast.success("Enrolled successfully!");
     } catch (err) {
       toast.error("Enrollment failed.");
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader></Loader>
   if (!course) return <div>Course not found</div>;
 
   return (
@@ -41,8 +45,12 @@ const CourseDetails = ({ user }) => {
           <h1 className="text-2xl font-bold mt-4">{course.title}</h1>
           <p className="text-gray-600 mt-2">{course.description}</p>
         </div>
-        <aside className="p-6 bg-white rounded shadow">
-          <div className="font-semibold">Price: RM {course.price}</div>
+        <aside className="p-6 bg-white rounded shadow mx-auto flex flex-col justify-center">
+          <h1 className="text-xl font-bold mt-4">
+            Course Duration: <br />{course.duration}
+          </h1>
+          <h1 className="text-xl font-bold mt-4">Course Category: <br />{course.category}</h1>
+          <div className="font-semibold mt-5">Price: $ {course.price}</div>
           <div className="mt-4">
             <button
               onClick={enroll}
