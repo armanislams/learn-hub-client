@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import Swal from "sweetalert2";
+import { AuthContext } from "../Provider/AuthContext";
 
 const CourseDetails = () => {
+    const { user } = useContext(AuthContext);
+    const [isEnrolled, setIsEnrolled] = useState(false)
+    console.log(isEnrolled);
+    
   const AxiosInstance = useAxios();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // ✅ Fetch course data once
   useEffect(() => {
@@ -22,48 +27,66 @@ const CourseDetails = () => {
       } catch (err) {
         console.error(err);
         toast.error("Failed to load course.");
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     fetchCourse();
   }, [AxiosInstance, id]);
 
-  // ✅ Enroll function
+  // ✅ Enroll function (includes user email)
   const enroll = async () => {
-    try {
-      await AxiosInstance.post(`/enrollments`, { courseId: id });
-      toast.success("Enrolled successfully!");
-    } catch (err) {
-      toast.error("Enrollment failed.");
-      console.error(err);
-    }
-  };
-
-  // ✅ Delete function (with confirmation)
-    const handleDelete = async () => {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      });
-
-      if (result.isConfirmed) {
-        try {
-          await AxiosInstance.delete(`/course/${id}`);
-          await Swal.fire("Deleted!", "Course has been deleted.", "success");
-          toast.success("Course deleted successfully!");
-          navigate("/my-courses");
-        } catch (err) {
-          console.error(err);
-          toast.error("Failed to delete course.");
-        }
+      try {
+        await AxiosInstance.post(`/enrollments`, {
+          courseId: id,
+          email: user.email, // ✅ send email with enrollment
+        });
+        toast.success("Enrolled successfully!");
+      } catch (err) {
+        toast.error("Enrollment failed.");
+        console.error(err);
+    } finally {
+        window.location.reload();
       }
     };
+     useEffect(() => {
+
+       const checkEnrollment = async () => {
+         try {
+           const res = await AxiosInstance.get("/enrollments/check", {
+             params: { courseId: id, email: user.email },
+           });
+           setIsEnrolled(res.data.enrolled);
+         } catch (err) {
+           console.error("Failed to check enrollment", err);
+         }
+       };
+
+       checkEnrollment();
+     }, [AxiosInstance, id, user?.email]);
+
+  // ✅ Delete function (with confirmation)
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This will permanently delete the course.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await AxiosInstance.delete(`/course/${id}`);
+        await Swal.fire("Deleted!", "Course has been deleted.", "success");
+        toast.success("Course deleted successfully!");
+        navigate("/my-courses");
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to delete course.");
+      }
+    }
+  };
 
   // ✅ Navigate to Update Page
   const handleUpdate = () => {
@@ -74,7 +97,7 @@ const CourseDetails = () => {
   if (!course) return <div>Course not found</div>;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 px-4">
       <div className="grid md:grid-cols-3 gap-6">
         {/* --- Left side (course info) --- */}
         <div className="md:col-span-2 bg-white p-6 rounded shadow">
@@ -101,9 +124,14 @@ const CourseDetails = () => {
           <div className="mt-6 space-y-3">
             <button
               onClick={enroll}
-              className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+              disabled={isEnrolled}
+              className={`w-full py-2 rounded transition ${
+                isEnrolled
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
+              }`}
             >
-              Enroll Now
+              {isEnrolled ? "Enrolled" : "Enroll Now"}
             </button>
 
             <button
