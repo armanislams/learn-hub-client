@@ -6,8 +6,8 @@ import { AuthContext } from "../Provider/AuthContext";
 const Login = () => {
   const { setUser, GoogleLogin, signIn } = use(AuthContext);
 
-  //   const navigate = useNavigate();
-  //   const location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
   const handleGLogin = () => {
     GoogleLogin()
       .then((result) => {
@@ -32,14 +32,15 @@ const Login = () => {
     <div className="container mx-auto py-10 max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       <form className="space-y-4 bg-white p-6 rounded shadow">
-        <input placeholder="Email" className="p-2 border w-full" required />
+        <input placeholder="Email" name="email" className="p-2 border w-full" required />
         <input
           type="password"
           placeholder="Password"
+          name="password"
           className="p-2 border w-full"
           required
         />
-        <button className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
+        <button onClick={handleSignIn} className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
           Login
         </button>
         <button

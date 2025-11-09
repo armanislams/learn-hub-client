@@ -9,8 +9,7 @@ const Register = () => {
     use(AuthContext);
   const navigate = useNavigate();
 
-  const validatePassword = (pw) =>
-    /[A-Z]/.test(pw) && /[a-z]/.test(pw) && pw.length >= 6;
+  const regEx = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
 
   const handleGLogin = () => {
     GoogleLogin()
@@ -25,21 +24,68 @@ const Register = () => {
         toast.error("Something Went Wrong. Please Try Again");
       });
   };
+  const handleCreateUser = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const photo = e.target.photo.value;
+    if (!regEx.test(password)) {
+      toast.error("pass");
+    } else {
+      createUser(email, password).then((result) => {
+        const user = result.user;
+        updateUser({ displayName: name, photoURL: photo })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photo });
+            navigate("/");
+          })
+          .catch((error) => {
+            toast.error("Something Went Wrong, Please try again");
+          });
+      });
+    }
+  };
 
   return (
     <div className="container mx-auto py-10 max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Register</h2>
-      <form className="space-y-4 bg-white p-6 rounded shadow">
-        <input placeholder="Name" className="p-2 border w-full" required />
-        <input placeholder="Email" className="p-2 border w-full" required />
-        <input placeholder="Photo URL" className="p-2 border w-full" />
+      <form
+        onSubmit={handleCreateUser}
+        className="space-y-4 bg-white p-6 rounded shadow"
+      >
         <input
-          type="password"
-          placeholder="Password"
+          placeholder="Name"
+          name="name"
           className="p-2 border w-full"
           required
         />
-        <button className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
+        <input
+          placeholder="Email"
+          name="email"
+          className="p-2 border w-full"
+          required
+        />
+        <input
+          placeholder="Photo URL"
+          name="photo"
+          className="p-2 border w-full"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          className="p-2 border w-full"
+          required
+        />
+        <p className="text-xs ">
+          - Must have an Uppercase & Lowercase letter in the password <br />-
+          Length must be at least 6 characters
+        </p>
+        <button
+          type="submit"
+          className="bg-indigo-600 text-white px-4 py-2 rounded w-full"
+        >
           Register
         </button>
         {/* Google */}
