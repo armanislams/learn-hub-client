@@ -31,7 +31,7 @@ const Login = () => {
   return (
     <div className="container mx-auto py-10 max-w-md">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
-      <form className="space-y-4 bg-white p-6 rounded shadow">
+      <form onSubmit={handleSignIn} className="space-y-4 bg-white p-6 rounded shadow">
         <input placeholder="Email" name="email" className="p-2 border w-full" required />
         <input
           type="password"
@@ -40,7 +40,7 @@ const Login = () => {
           className="p-2 border w-full"
           required
         />
-        <button onClick={handleSignIn} className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
+        <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
           Login
         </button>
         <button

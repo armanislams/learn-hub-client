@@ -40,7 +40,7 @@ const Register = () => {
             setUser({ ...user, displayName: name, photoURL: photo });
             navigate("/");
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error("Something Went Wrong, Please try again");
           });
       });
