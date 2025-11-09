@@ -7,6 +7,7 @@ import PrivateRoute from '../Provider/PrivateRoute';
 import AllCourses from './AllCourses';
 import Login from './Login';
 import Register from './Register';
+import CourseDetails from './CourseDetails';
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
             {
                 path: '/register',
                 Component: Register
+            },
+            {
+                path: '/course-details/:id',
+                element: <PrivateRoute>
+                    <CourseDetails></CourseDetails>
+                </PrivateRoute>
             }
         ]
     }

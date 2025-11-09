@@ -1,7 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
+import useAxios from "../hooks/UseAxios";
+import { useState } from "react";
+import { Link } from "react-router";
 
 const Home = () => {
+    const [course, setCourse] = useState([])
+    const AxiosInstance = useAxios()
+    AxiosInstance.get('/course')
+        .then(data => {
+            setCourse(data.data)
+    })
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* ---------------- HERO SECTION ---------------- */}
@@ -38,30 +47,29 @@ const Home = () => {
             Popular Courses
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
+            {course.map((c) => (
               <motion.div
-                key={i}
+                key={c._id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: c * 0.1 }}
                 viewport={{ once: true }}
                 className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300"
               >
                 <img
-                  src={`https://picsum.photos/400/250?random=${i}`}
+                  src={c.image}
                   alt="Course"
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">
-                    Course Title {i + 1}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Learn essential skills and boost your knowledge.
-                  </p>
-                  <button className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition text-sm">
+                  <h3 className="text-lg font-semibold mb-2">{c.title}</h3>
+                  <p className="text-gray-600 text-sm mb-3">{c.description}</p>
+                  <Link
+                    to={`/course-details/${_id}`}
+                    className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition text-sm"
+                  >
                     View Details
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             ))}

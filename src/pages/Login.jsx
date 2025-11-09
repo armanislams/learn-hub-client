@@ -1,7 +1,7 @@
 import React, { use, useState } from "react";
-import { toast } from "react-hot-toast";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { setUser, GoogleLogin, signIn } = use(AuthContext);

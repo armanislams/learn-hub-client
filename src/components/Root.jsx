@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import { Outlet } from 'react-router';
 import Footer from './Footer';
-import { ToastBar } from 'react-hot-toast';
 import { ToastContainer } from 'react-toastify';
 
 const Root = () => {
