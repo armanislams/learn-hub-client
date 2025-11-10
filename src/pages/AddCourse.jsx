@@ -10,7 +10,7 @@ const AddCourse = () => {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     title: "",
-    imageUrl: "",
+    image: "",
     price: "",
     duration: "",
     category: "",
@@ -28,51 +28,69 @@ const AddCourse = () => {
       await AxiosInstance.post("/create-course", form);
       toast.success("Course added!");
       navigate('/all-course')
+      
       // clear or redirect
     } catch (err) {
-      toast.error("Failed to add course");
+      if (err.response && err.response.status === 409) {
+        toast.warn("A course with this title already exists!");
+      } else {
+        toast.error("Failed to add course.");
+      }
     }
   };
 
+
+
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 mt-5 rounded-2xl bg-white">
+          <h1 className="text-2xl font-bold text-center mb-6">
+            Add Course Details
+          </h1>
+        
       <form
         onSubmit={handleSubmit}
-        className="grid md:grid-cols-2 gap-6 bg-white p-6 rounded shadow"
+        className="grid md:grid-cols-2 gap-6 p-6 rounded shadow"
       >
         <input
           placeholder="Title"
           value={form.title}
           onChange={(e) => handleChange("title", e.target.value)}
-          className="p-2 border"
+          
           required
         />
         <input
           placeholder="Image URL"
-          value={form.imageUrl}
-          onChange={(e) => handleChange("imageUrl", e.target.value)}
-          className="p-2 border"
+          value={form.image}
+          onChange={(e) => handleChange("image", e.target.value)}
+          
           required
         />
         <input
           placeholder="Price"
           value={form.price}
           onChange={(e) => handleChange("price", e.target.value)}
-          className="p-2 border"
+          
           required
         />
         <input
           placeholder="Duration"
           value={form.duration}
           onChange={(e) => handleChange("duration", e.target.value)}
-          className="p-2 border"
+          
         />
-        <input
-          placeholder="Category"
+        <select
           value={form.category}
           onChange={(e) => handleChange("category", e.target.value)}
-          className="p-2 border"
-        />
+          className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">Select Category</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Design">Design</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Business">Business</option>
+        </select>
+
         <textarea
           placeholder="Description"
           value={form.description}

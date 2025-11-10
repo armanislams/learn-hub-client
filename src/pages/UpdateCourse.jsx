@@ -57,14 +57,15 @@ const UpdateCourse = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-6">
-      <h1 className="text-2xl font-bold text-center mb-6 text-white">
-        Update Course Details
-      </h1>
-
+    <div className="max-w-3xl mx-auto py-10 px-6 bg-white mt-5 rounded-xl">
+      <div>
+        <h1 className="text-2xl font-bold text-center mb-6 ">
+          Update Course Details
+        </h1>
+      </div>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-lg space-y-5"
+        className=" p-6 rounded-lg shadow-lg space-y-5"
       >
         {/* --- Title --- */}
         <div>
@@ -77,7 +78,6 @@ const UpdateCourse = () => {
             value={course.title}
             onChange={handleChange}
             placeholder="Enter course title"
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
 
@@ -89,10 +89,9 @@ const UpdateCourse = () => {
           <input
             type="text"
             name="imageUrl"
-            value={course.imageUrl}
+            value={course.image}
             onChange={handleChange}
             placeholder="Enter image URL"
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
 
@@ -108,7 +107,6 @@ const UpdateCourse = () => {
               value={course.price}
               onChange={handleChange}
               placeholder="Enter course price"
-              className="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
 
@@ -122,7 +120,6 @@ const UpdateCourse = () => {
               value={course.duration}
               onChange={handleChange}
               placeholder="e.g., 4 weeks, 20 hours"
-              className="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
         </div>
@@ -136,7 +133,6 @@ const UpdateCourse = () => {
             name="category"
             value={course.category}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
           >
             <option value="">Select Category</option>
             <option value="Web Development">Web Development</option>
