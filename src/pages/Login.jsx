@@ -25,7 +25,9 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    signIn(email, password);
+      signIn(email, password);
+              navigate(`${location.state ? location.state : "/"}`);
+
   };
 
   return (

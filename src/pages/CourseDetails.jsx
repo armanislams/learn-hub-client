@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useParams, useNavigate } from "react-router";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import Swal from "sweetalert2";
+import { AuthContext } from "../Provider/AuthContext";
 
 const CourseDetails = () => {
-  const AxiosInstance = useAxios();
+  const { user } = use(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
+  const AxiosInstance = useAxios();
 
   const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [enrolling, setEnrolling] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
 
-  // ✅ Fetch course data once
+  // Fetch course data
   useEffect(() => {
     const fetchCourse = async () => {
+      setLoading(true);
       try {
-        const res = await AxiosInstance.get(`/course/${id}`);
-        setCourse(res.data);
+        const courseRes = await AxiosInstance.get(`/course/${id}`);
+        setCourse(courseRes.data);
       } catch (err) {
         console.error(err);
-        toast.error("Failed to load course.");
+        toast.error("Failed to load course data.");
       } finally {
         setLoading(false);
       }
@@ -29,22 +34,36 @@ const CourseDetails = () => {
     fetchCourse();
   }, [AxiosInstance, id]);
 
-  // ✅ Enroll function
-  const enroll = async () => {
+  // Enroll function
+  const handleEnroll = async () => {
+    setEnrolling(true);
+
     try {
-      await AxiosInstance.post(`/enrollments`, { courseId: id });
-      toast.success("Enrolled successfully!");
+      const res = await AxiosInstance.post("/enrollments", {
+        courseId: id,
+        email: user.email,
+      });
+
+      if (res.data.message === "Already Enrolled") {
+        setIsEnrolled(true);
+        toast.info("You are already enrolled in this course.");
+      } else {
+        setIsEnrolled(true);
+        toast.success("Enrolled successfully!");
+      }
     } catch (err) {
-      toast.error("Enrollment failed.");
       console.error(err);
+      toast.error("Failed to enroll.");
+    } finally {
+      setEnrolling(false);
     }
   };
 
-  // ✅ Delete function (with confirmation)
+  // Delete function
   const handleDelete = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "This will permanently delete the course.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -55,7 +74,6 @@ const CourseDetails = () => {
     if (result.isConfirmed) {
       try {
         await AxiosInstance.delete(`/course/${id}`);
-        await Swal.fire("Deleted!", "Course has been deleted.", "success");
         toast.success("Course deleted successfully!");
         navigate("/my-courses");
       } catch (err) {
@@ -65,21 +83,21 @@ const CourseDetails = () => {
     }
   };
 
-  // ✅ Navigate to Update Page
+  // Navigate to update
   const handleUpdate = () => {
     navigate(`/update-course/${id}`);
   };
 
   if (loading) return <Loader />;
-  if (!course) return <div>Course not found</div>;
+  if (!course) return <div className="text-center py-10">Course not found</div>;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 px-4">
       <div className="grid md:grid-cols-3 gap-6">
-        {/* --- Left side (course info) --- */}
+        {/* Left side */}
         <div className="md:col-span-2 bg-white p-6 rounded shadow">
           <img
-            src={course.imageUrl}
+            src={course.image}
             alt={course.title}
             className="w-full h-64 object-cover rounded"
           />
@@ -87,23 +105,38 @@ const CourseDetails = () => {
           <p className="text-gray-600 mt-2">{course.description}</p>
         </div>
 
-        {/* --- Right side (sidebar) --- */}
+        {/* Right side */}
         <aside className="p-6 bg-white rounded shadow mx-auto flex flex-col justify-center">
           <h1 className="text-xl font-bold mt-4">
-            Course Duration: <br /> {course.duration}
+            Duration: <br /> {course.duration}
           </h1>
           <h1 className="text-xl font-bold mt-4">
-            Course Category: <br /> {course.category}
+            Category: <br /> {course.category}
           </h1>
           <div className="font-semibold mt-5">Price: $ {course.price}</div>
 
-          {/* --- Buttons --- */}
+          {/* Buttons */}
           <div className="mt-6 space-y-3">
             <button
-              onClick={enroll}
-              className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+              onClick={handleEnroll}
+              disabled={isEnrolled || enrolling || !user}
+              className={`w-full py-2 rounded transition ${
+                !user
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : isEnrolled
+                  ? "bg-green-500 cursor-not-allowed"
+                  : enrolling
+                  ? "bg-indigo-400 cursor-wait"
+                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
+              }`}
             >
-              Enroll Now
+              {!user
+                ? "Login to Enroll"
+                : isEnrolled
+                ? "✓ Enrolled"
+                : enrolling
+                ? "Enrolling..."
+                : "Enroll Now"}
             </button>
 
             <button
