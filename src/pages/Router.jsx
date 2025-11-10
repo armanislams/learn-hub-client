@@ -8,14 +8,12 @@ import AllCourses from './AllCourses';
 import Login from './Login';
 import Register from './Register';
 import CourseDetails from './CourseDetails';
-import { path } from 'framer-motion/client';
 import UpdateCourse from './UpdateCourse';
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    // errorElement: <ErrorPage/>,
     children: [
       {
         index: true,

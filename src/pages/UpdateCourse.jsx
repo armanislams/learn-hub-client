@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
 
 const UpdateCourse = () => {
-  const { id } = useParams();
+    const { id } = useParams();
   const AxiosInstance = useAxios();
   const navigate = useNavigate();
 
   const [course, setCourse] = useState({
     title: "",
-    imageUrl: "",
+    image: "",
     price: "",
     duration: "",
     category: "",
     description: "",
   });
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // ✅ Fetch existing course data
+  // Fetch course data when component mounts
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -28,13 +26,12 @@ const UpdateCourse = () => {
         setCourse(res.data);
       } catch (err) {
         console.error(err);
-        toast.error("Failed to load course data.");
-      } finally {
-        setLoading(false);
+        toast.error("Failed to load course.");
       }
     };
     fetchCourse();
   }, [AxiosInstance, id]);
+  
 
   // ✅ Handle input change
   const handleChange = (e) => {
@@ -46,23 +43,11 @@ const UpdateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !course.title ||
-      !course.imageUrl ||
-      !course.price ||
-      !course.duration ||
-      !course.category ||
-      !course.description
-    ) {
-      toast.warn("Please fill all fields!");
-      return;
-    }
-
     setSaving(true);
     try {
-      await AxiosInstance.put(`/course/${id}`, course);
+      await AxiosInstance.patch(`/course/${id}`, course);
       toast.success("Course updated successfully!");
-      navigate(`/course/${id}`); // redirect back to details
+      navigate(`/course-details/${id}`); // redirect back to details
     } catch (err) {
       console.error(err);
       toast.error("Failed to update course.");
@@ -70,8 +55,6 @@ const UpdateCourse = () => {
       setSaving(false);
     }
   };
-
-  if (loading) return <Loader />;
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-6">

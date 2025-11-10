@@ -1,17 +1,32 @@
 
 import { motion } from "framer-motion";
 import useAxios from "../hooks/UseAxios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import CourseCard from "../components/CourseCard";
 
 const Home = () => {
-    const [course, setCourse] = useState([])
-    const AxiosInstance = useAxios()
-    AxiosInstance.get('/course')
-        .then(data => {
-            setCourse(data.data)
-    })
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const AxiosInstance = useAxios();
+    
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                setLoading(true);
+                const response = await AxiosInstance.get('/course');
+                setCourses(Array.isArray(response.data) ? response.data : []);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+                setError(error.message);
+                setCourses([]); // Set empty array if error occurs
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+    }, [AxiosInstance]);
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* ---------------- HERO SECTION ---------------- */}
@@ -48,9 +63,23 @@ const Home = () => {
             Popular Courses
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {course.map((c) => (
-              <CourseCard key={c._id} c={c}></CourseCard>
-            ))}
+            {loading ? (
+              <div className="col-span-3 text-center py-10">
+                <div className="text-2xl text-gray-600">Loading courses...</div>
+              </div>
+            ) : error ? (
+              <div className="col-span-3 text-center py-10">
+                <div className="text-2xl text-red-600">Error: {error}</div>
+              </div>
+            ) : courses.length === 0 ? (
+              <div className="col-span-3 text-center py-10">
+                <div className="text-2xl text-gray-600">No courses available</div>
+              </div>
+            ) : (
+              courses.map((course) => (
+                <CourseCard key={course._id} course={course} />
+              ))
+            )}
           </div>
         </div>
       </motion.section>
