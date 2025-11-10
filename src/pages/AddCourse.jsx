@@ -1,9 +1,13 @@
-// src/pages/AddCourse.jsx
-import React, { useState } from "react";
-import api from "../api/api";
-import { toast } from "react-hot-toast";
+import React, { use, useState } from "react";
+import { AuthContext } from "../Provider/AuthContext";
+import useAxios from "../hooks/UseAxios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
-const AddCourse = ({ user }) => {
+const AddCourse = () => {
+  const { user } = use(AuthContext)
+  const AxiosInstance = useAxios()
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     title: "",
     imageUrl: "",
@@ -11,7 +15,6 @@ const AddCourse = ({ user }) => {
     duration: "",
     category: "",
     description: "",
-    isFeatured: false,
     instructorName: user?.displayName || "",
     instructorEmail: user?.email || "",
     instructorPhoto: user?.photoURL || "",
@@ -22,8 +25,9 @@ const AddCourse = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/courses", form);
+      await AxiosInstance.post("/create-course", form);
       toast.success("Course added!");
+      navigate('/all-course')
       // clear or redirect
     } catch (err) {
       toast.error("Failed to add course");
@@ -75,18 +79,10 @@ const AddCourse = ({ user }) => {
           onChange={(e) => handleChange("description", e.target.value)}
           className="p-2 border md:col-span-2"
         />
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={form.isFeatured}
-            onChange={(e) => handleChange("isFeatured", e.target.checked)}
-          />
-          <span>Featured</span>
-        </label>
 
         <button
           type="submit"
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
+          className="bg-indigo-600 col-span-2 text-white px-4 py-2 rounded"
         >
           Add Course
         </button>
