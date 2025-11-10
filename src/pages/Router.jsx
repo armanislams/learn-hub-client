@@ -10,6 +10,7 @@ import Register from './Register';
 import CourseDetails from './CourseDetails';
 import UpdateCourse from './UpdateCourse';
 import AddCourse from './AddCourse';
+import Dashboard from './Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -53,13 +54,23 @@ const router = createBrowserRouter([
             <UpdateCourse></UpdateCourse>
           </PrivateRoute>
         ),
-        },
-        {
-            path: '/add-course',
-            element: <PrivateRoute>
-                <AddCourse></AddCourse>
-            </PrivateRoute>
-      }
+      },
+      {
+        path: "/add-course",
+        element: (
+          <PrivateRoute>
+            <AddCourse></AddCourse>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <Dashboard/>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);
