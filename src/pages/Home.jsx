@@ -1,32 +1,34 @@
-
 import { motion } from "framer-motion";
 import useAxios from "../hooks/UseAxios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Link } from "react-router";
 import CourseCard from "../components/CourseCard";
+import useTitle from "../hooks/useTitle";
+import { AuthContext } from "../Provider/AuthContext";
 
 const Home = () => {
-    const [courses, setCourses] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const AxiosInstance = useAxios();
-    
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                setLoading(true);
-                const response = await AxiosInstance.get('/course');
-                setCourses(Array.isArray(response.data) ? response.data : []);
-            } catch (error) {
-                console.error('Error fetching courses:', error);
-                setError(error.message);
-                setCourses([]); // Set empty array if error occurs
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCourses();
-    }, [AxiosInstance]);
+  useTitle("Home");
+  const [courses, setCourses] = useState([]);
+  const { loading, setLoading } = use(AuthContext);
+  const [error, setError] = useState(null);
+  const AxiosInstance = useAxios();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await AxiosInstance.get("/course");
+        setCourses(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        setError(error.message);
+        setCourses([]); // Set empty array if error occurs
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, [AxiosInstance, setLoading]);
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* ---------------- HERO SECTION ---------------- */}
@@ -44,7 +46,10 @@ const Home = () => {
             Explore courses, gain skills, and achieve your dreams — all in one
             platform.
           </p>
-          <Link to={'/all-course'} className="bg-white text-indigo-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition">
+          <Link
+            to={"/all-course"}
+            className="bg-white text-indigo-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition"
+          >
             Explore Courses
           </Link>
         </div>
@@ -73,7 +78,9 @@ const Home = () => {
               </div>
             ) : courses.length === 0 ? (
               <div className="col-span-3 text-center py-10">
-                <div className="text-2xl text-gray-600">No courses available</div>
+                <div className="text-2xl text-gray-600">
+                  No courses available
+                </div>
               </div>
             ) : (
               courses.map((course) => (

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import useAxios from "../hooks/UseAxios";
 import CourseCard from "../components/CourseCard";
+import useTitle from "../hooks/useTitle";
+import { AuthContext } from "../Provider/AuthContext";
 
 const AllCourses = () => {
+  useTitle('All Course')
   const AxiosInstance = useAxios();
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(""); // selected category
-  const [loading, setLoading] = useState(false);
+  const {loading, setLoading} = use(AuthContext);
 
   useEffect(() => {
     const fetchCourses = async () => {

@@ -4,8 +4,10 @@ import CourseCard from "../components/CourseCard";
 import useAxios from "../hooks/UseAxios";
 import { AuthContext } from "../Provider/AuthContext";
 import Loader from "../components/Loader";
+import useTitle from "../hooks/useTitle";
 
 const EnrolledCourses = () => {
+  useTitle('Enrolled Courses')
   const AxiosInstance = useAxios();
   const { user, loading } = use(AuthContext);
   const [courses, setCourses] = useState([]);

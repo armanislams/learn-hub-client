@@ -76,7 +76,7 @@ const Header = () => {
             </ul>
           </div>
           <Link to="/" className="text-2xl font-bold text-indigo-600">
-            LearnSphere
+            LearnHub
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">

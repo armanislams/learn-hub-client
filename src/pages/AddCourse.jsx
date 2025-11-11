@@ -3,8 +3,10 @@ import { AuthContext } from "../Provider/AuthContext";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import useTitle from "../hooks/useTitle";
 
 const AddCourse = () => {
+  useTitle('Add Course')
   const { user } = use(AuthContext)
   const AxiosInstance = useAxios()
   const navigate = useNavigate()

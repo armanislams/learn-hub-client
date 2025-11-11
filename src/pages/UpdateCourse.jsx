@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
+import useTitle from "../hooks/useTitle";
 
 const UpdateCourse = () => {
+    useTitle('Update Course')
     const { id } = useParams();
   const AxiosInstance = useAxios();
   const navigate = useNavigate();

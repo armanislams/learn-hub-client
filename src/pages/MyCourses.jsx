@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext, use } from "react";
+import React, { useState, useEffect, use } from "react";
 import useAxios from "../hooks/UseAxios";
 import { AuthContext } from "../Provider/AuthContext";
 import CourseCard from "../components/CourseCard";
+import useTitle from "../hooks/useTitle";
 
 const MyCourses = () => {
+  useTitle('My Courses')
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { user } = use(AuthContext);
+  const { user, loading, setLoading } = use(AuthContext);
   const AxiosInstance = useAxios()
 
   useEffect(() => {
@@ -25,8 +26,8 @@ const MyCourses = () => {
       }
     };
 
-   fetchMyCourses();
-  }, [user?.email, AxiosInstance]);
+    fetchMyCourses();
+  }, [user?.email, AxiosInstance, setLoading]);
 
   return (
     <div className="container mx-auto px-4 py-6">

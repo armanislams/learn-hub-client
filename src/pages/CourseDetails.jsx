@@ -5,28 +5,26 @@ import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Provider/AuthContext";
+import useTitle from "../hooks/useTitle";
 
 const CourseDetails = () => {
-  const { user } = use(AuthContext);
-  const { id } = useParams(); // this is courseId
+    useTitle('Course Details')
+  const { user,loading, setLoading } = use(AuthContext);
+  const { id } = useParams();
   const navigate = useNavigate();
   const AxiosInstance = useAxios();
 
   const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [enrolling, setEnrolling] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
-  // Fetch course data & enrollment status on page load
   useEffect(() => {
     const fetchCourseAndEnrollment = async () => {
       setLoading(true);
       try {
-        // 1️⃣ Fetch course info
         const courseRes = await AxiosInstance.get(`/course/${id}`);
         setCourse(courseRes.data);
 
-        // 2️⃣ Check enrollment
         if (user?.email) {
           const enrollRes = await AxiosInstance.get(`/enrollments/${id}`, {
             params: { email: user.email },

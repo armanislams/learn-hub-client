@@ -1,8 +1,10 @@
 import { CornerDownLeft } from 'lucide';
 import React from 'react';
 import { useNavigate } from 'react-router';
+import useTitle from '../hooks/useTitle';
 
 const ErrorPage = () => {
+    useTitle('Error 404')
     const navigate = useNavigate()
     const handleBack = () => {
         navigate(-1)
