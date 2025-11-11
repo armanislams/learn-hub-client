@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { div } from 'framer-motion/client';
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -19,7 +18,7 @@ const CourseCard = ({ course }) => (
         <p className="text-gray-600 text-sm mb-3">{course.description}</p>
         <Link
           to={`/course-details/${course._id}`}
-          className="bg-indigo-600 text-white py-2 w-full px-4 rounded-md hover:bg-indigo-700 transition text-sm"
+          className="bg-indigo-600 text-white py-2 w-full px-4 rounded-md flex justify-center items-center hover:bg-indigo-700 transition text-sm"
         >
           View Details
         </Link>

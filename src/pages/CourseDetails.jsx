@@ -87,7 +87,7 @@ const CourseDetails = () => {
       try {
         await AxiosInstance.delete(`/course/${id}`);
         toast.success("Course deleted successfully!");
-        navigate("/my-courses");
+        navigate("/all-courses");
       } catch (err) {
         console.error(err);
         toast.error("Failed to delete course.");

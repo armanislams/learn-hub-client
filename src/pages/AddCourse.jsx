@@ -15,6 +15,7 @@ const AddCourse = () => {
     duration: "",
     category: "",
     description: "",
+    isFeatured: false,
     instructorName: user?.displayName || "",
     instructorEmail: user?.email || "",
     instructorPhoto: user?.photoURL || "",
@@ -72,25 +73,32 @@ const AddCourse = () => {
           value={form.duration}
           onChange={(e) => handleChange("duration", e.target.value)}
         />
-        <select
+        <input
+          type="text"
+          placeholder="Enter Category"
           value={form.category}
           onChange={(e) => handleChange("category", e.target.value)}
           className="p-2 border rounded-md col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">Select Category</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Design">Design</option>
-          <option value="Data Science">Data Science</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Business">Business</option>
-        </select>
+        />
 
         <textarea
           placeholder="Description"
           value={form.description}
           onChange={(e) => handleChange("description", e.target.value)}
-          className="p-2 border md:col-span-2"
+          className="p-2 border md:col-span-1 rounded-md"
         />
+        <div className="md:col-span-1 mb-4">
+          <input
+            type="checkbox"
+            id="isFeatured"
+            checked={form.isFeatured}
+            onChange={(e) => handleChange("isFeatured", e.target.checked)}
+            className="h-4 w-4"
+          />
+          <label htmlFor="isFeatured" className="select-none">
+            Mark as Featured
+          </label>
+        </div>
 
         <button
           type="submit"
