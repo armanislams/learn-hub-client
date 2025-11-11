@@ -20,7 +20,6 @@ const CourseDetails = () => {
 
   useEffect(() => {
     const fetchCourseAndEnrollment = async () => {
-      setLoading(true);
       try {
         const courseRes = await AxiosInstance.get(`/course/${id}`);
         setCourse(courseRes.data);
@@ -40,7 +39,7 @@ const CourseDetails = () => {
     };
 
     fetchCourseAndEnrollment();
-  }, [AxiosInstance, id, user?.email]);
+  }, [AxiosInstance, id, user?.email,setLoading]);
 
   // Enroll button
   const handleEnroll = async () => {
@@ -99,45 +98,45 @@ const CourseDetails = () => {
   };
 
   if (loading) return <Loader />;
-  if (!course) return <div className="text-center py-10">Course not found</div>;
+  if (!course) return <div className="text-center py-10 text-base-content">Course not found</div>;
 
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left side */}
-        <div className="md:col-span-2 bg-white p-6 rounded shadow">
+        <div className="md:col-span-2 bg-base-100 p-6 rounded shadow">
           <img
-            src={course.image}
+            src={course.image || course.imageUrl}
             alt={course.title}
             className="w-full h-64 object-cover rounded"
           />
-          <h1 className="text-2xl font-bold mt-4">{course.title}</h1>
-          <p className="text-gray-600 mt-2">{course.description}</p>
+          <h1 className="text-2xl font-bold mt-4 text-base-content">{course.title}</h1>
+          <p className="text-base-content/70 mt-2">{course.description}</p>
         </div>
 
         {/* Right side */}
-        <aside className="p-6 bg-white rounded shadow mx-auto flex flex-col justify-center">
-          <h1 className="text-xl font-bold mt-4">
+        <aside className="p-6 bg-base-100 rounded shadow mx-auto flex flex-col justify-center">
+          <h1 className="text-xl font-bold mt-4 text-base-content">
             Duration: <br /> {course.duration}
           </h1>
-          <h1 className="text-xl font-bold mt-4">
+          <h1 className="text-xl font-bold mt-4 text-base-content">
             Category: <br /> {course.category}
           </h1>
-          <div className="font-semibold mt-5">Price: $ {course.price}</div>
+          <div className="font-semibold mt-5 text-base-content">Price: $ {course.price}</div>
 
           {/* Buttons */}
           <div className="mt-6 space-y-3">
             <button
               onClick={handleEnroll}
               disabled={isEnrolled || enrolling || !user}
-              className={`w-full py-2 rounded transition ${
+              className={`w-full py-2 rounded transition text-white font-medium ${
                 !user
                   ? "bg-gray-400 cursor-not-allowed"
                   : isEnrolled
                   ? "bg-green-500 cursor-not-allowed"
                   : enrolling
                   ? "bg-indigo-400 cursor-wait"
-                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                  : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
               {!user
@@ -151,14 +150,14 @@ const CourseDetails = () => {
 
             <button
               onClick={handleUpdate}
-              className="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition"
+              className="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition font-medium"
             >
               Edit Course
             </button>
 
             <button
               onClick={handleDelete}
-              className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+              className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition font-medium"
             >
               Delete Course
             </button>

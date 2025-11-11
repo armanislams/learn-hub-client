@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 const Root = () => {
     return (
-      <div className="bg-indigo-400">
+      <div className="bg-indigo-400 root">
         <Header></Header>
         <Outlet></Outlet>
         <Footer></Footer>

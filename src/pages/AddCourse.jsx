@@ -1,13 +1,15 @@
-import React, { use, useState } from "react";
+import React, { use, useState, useContext } from "react";
 import { AuthContext } from "../Provider/AuthContext";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import useTitle from "../hooks/useTitle";
+import { ThemeContext } from "../Provider/ThemeContextDefinition";
 
 const AddCourse = () => {
   useTitle('Add Course')
   const { user } = use(AuthContext)
+  useContext(ThemeContext);
   const AxiosInstance = useAxios()
   const navigate = useNavigate()
   const [form, setForm] = useState({
@@ -45,66 +47,93 @@ const AddCourse = () => {
 
 
   return (
-    <div className="container mx-auto py-10 rounded-2xl ">
-      <h1 className="heading">Add Course Details</h1>
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-base-content">Add Course Details</h1>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white grid md:grid-cols-2 gap-6 p-6 rounded shadow"
+        className="bg-base-100 max-w-3xl mx-auto grid md:grid-cols-2 gap-6 p-6 rounded-lg shadow-lg"
       >
-        <input
-          placeholder="Title"
-          value={form.title}
-          onChange={(e) => handleChange("title", e.target.value)}
-          required
-        />
-        <input
-          placeholder="Image URL"
-          value={form.image}
-          onChange={(e) => handleChange("image", e.target.value)}
-          required
-        />
-        <input
-          placeholder="Price"
-          value={form.price}
-          onChange={(e) => handleChange("price", e.target.value)}
-          required
-        />
-        <input
-          placeholder="Duration"
-          value={form.duration}
-          onChange={(e) => handleChange("duration", e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Enter Category"
-          value={form.category}
-          onChange={(e) => handleChange("category", e.target.value)}
-          className="p-2 border rounded-md col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-base-content mb-2">Title</label>
+          <input
+            placeholder="Enter course title"
+            value={form.title}
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
 
-        <textarea
-          placeholder="Description"
-          value={form.description}
-          onChange={(e) => handleChange("description", e.target.value)}
-          className="p-2 border md:col-span-1 rounded-md"
-        />
-        <div className="md:col-span-1 mb-4">
+        <div>
+          <label className="block text-sm font-medium text-base-content mb-2">Image URL</label>
+          <input
+            placeholder="Enter image URL"
+            value={form.image}
+            onChange={(e) => handleChange("image", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-base-content mb-2">Price</label>
+          <input
+            placeholder="Enter price"
+            value={form.price}
+            onChange={(e) => handleChange("price", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-base-content mb-2">Duration</label>
+          <input
+            placeholder="e.g., 4 weeks, 20 hours"
+            value={form.duration}
+            onChange={(e) => handleChange("duration", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        <div className="md:col-span-1">
+          <label className="block text-sm font-medium text-base-content mb-2">Category</label>
+          <input
+            type="text"
+            placeholder="Enter category (e.g., Web Development, Design)"
+            value={form.category}
+            onChange={(e) => handleChange("category", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-base-content mb-2">Description</label>
+          <textarea
+            placeholder="Write a detailed description about the course"
+            value={form.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+            className="w-full px-4 py-2 border border-base-300 rounded-md bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[100px]"
+          />
+        </div>
+
+        <div className="md:col-span-1 flex flex-col items-center gap-3 p-4 bg-base-200 rounded-md">
           <input
             type="checkbox"
             id="isFeatured"
             checked={form.isFeatured}
             onChange={(e) => handleChange("isFeatured", e.target.checked)}
-            className="h-4 w-4"
+            className="h-5 w-5 rounded border-2 border-base-300 text-indigo-600 accent-indigo-600 cursor-pointer"
           />
-          <label htmlFor="isFeatured" className="select-none">
-            Mark as Featured
+          <label htmlFor="isFeatured" className="text-base-content font-medium cursor-pointer select-none flex-1">
+            Mark as Featured Course
           </label>
         </div>
 
         <button
           type="submit"
-          className="bg-indigo-600 col-span-2 text-white px-4 py-2 rounded"
+          className="md:col-span-1 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
         >
           Add Course
         </button>

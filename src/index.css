@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default;
+  themes: light --default,dark --prefersdark;
 }
 button{
   cursor: pointer;
@@ -9,5 +9,8 @@ input, select{
   @apply border w-full  border-gray-300 rounded-md p-2
 }
 .heading{
-  @apply text-2xl font-bold mb-6 text-white text-center
+  @apply text-base-content2xl font-bold mb-6 text-base-content text-base-contentcenter
+}
+.root {
+  @apply text-base-contentbase-content;
 }

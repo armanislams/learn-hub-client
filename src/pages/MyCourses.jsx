@@ -12,7 +12,6 @@ const MyCourses = () => {
 
   useEffect(() => {
     const fetchMyCourses = async () => {
-      setLoading(true);
       try {
         const res = await AxiosInstance.get("/course");
         const myCourses = res.data.filter(

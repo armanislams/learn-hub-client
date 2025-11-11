@@ -44,12 +44,12 @@ const Login = () => {
           className="p-2 border w-full"
           required
         />
-        <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded w-full">
+        <button type="submit" className="bg-indigo-600 text-base-content px-4 py-2 rounded w-full">
           Login
         </button>
         <button
           onClick={handleGLogin}
-          className="btn bg-white text-black w-full border-[#e5e5e5]"
+          className="btn bg-white text-base-content w-full border-[#e5e5e5]"
         >
           <svg
             aria-label="Google logo"
@@ -80,9 +80,9 @@ const Login = () => {
           </svg>
           Login with Google
         </button>
-        <div className="text-sm">
+        <div className="text-base-contentsm">
           Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-600">
+          <Link to="/register" className="text-base-contentindigo-600">
             Register
           </Link>
         </div>

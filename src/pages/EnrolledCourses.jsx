@@ -5,6 +5,7 @@ import useAxios from "../hooks/UseAxios";
 import { AuthContext } from "../Provider/AuthContext";
 import Loader from "../components/Loader";
 import useTitle from "../hooks/useTitle";
+import { Link } from "react-router";
 
 const EnrolledCourses = () => {
   useTitle('Enrolled Courses')
@@ -40,6 +41,17 @@ const EnrolledCourses = () => {
 
       {loading ? (
         <Loader />
+      ) : courses.length === 0 ? (
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="heading">
+            You Are Not Enrolled to any Courses Yet. Check Out Our Courses
+          </h1>
+          <Link to={"/all-course"}>
+            <button className="bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-700">
+              All Courses
+            </button>
+          </Link>
+        </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
           {courses.map((course, i) => (

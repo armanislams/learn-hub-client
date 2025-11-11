@@ -80,20 +80,20 @@ const Register = () => {
           className="p-2 border w-full"
           required
         />
-        <p className="text-xs ">
+        <p className="text-base-contentxs ">
           - Must have an Uppercase & Lowercase letter in the password <br />-
           Length must be at least 6 characters
         </p>
         <button
           type="submit"
-          className="bg-indigo-600 text-white px-4 py-2 rounded w-full"
+          className="bg-indigo-600 text-base-content px-4 py-2 rounded w-full"
         >
           Register
         </button>
         {/* Google */}
         <button
           onClick={handleGLogin}
-          className="btn bg-white text-black w-full border-[#e5e5e5]"
+          className="btn bg-white text-base-content w-full border-[#e5e5e5]"
         >
           <svg
             aria-label="Google logo"
