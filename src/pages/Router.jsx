@@ -11,6 +11,8 @@ import CourseDetails from './CourseDetails';
 import UpdateCourse from './UpdateCourse';
 import AddCourse from './AddCourse';
 import Dashboard from './Dashboard';
+import MyCourses from './MyCourses';
+import EnrolledCourses from './EnrolledCourses';
 
 const router = createBrowserRouter([
   {
@@ -70,7 +72,24 @@ const router = createBrowserRouter([
             <Dashboard/>
           </PrivateRoute>
         ),
-      },
+        },
+        {
+            path: '/all-course',
+            Component: AllCourses
+        },
+        {
+            path: '/my-added-course',
+            element: <PrivateRoute>
+                <MyCourses></MyCourses>
+            </PrivateRoute>
+        }
+        ,
+        {
+            path: '/enrolled-course',
+            element: <PrivateRoute>
+                <EnrolledCourses></EnrolledCourses>
+            </PrivateRoute>
+        }
     ],
   },
 ]);

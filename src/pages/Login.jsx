@@ -32,7 +32,7 @@ const Login = () => {
 
   return (
     <div className="container mx-auto py-10 max-w-md">
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <h2 className="heading">Login</h2>
       <form onSubmit={handleSignIn} className="space-y-4 bg-white p-6 rounded shadow">
         <input placeholder="Email" name="email" className="p-2 border w-full" required />
         <input

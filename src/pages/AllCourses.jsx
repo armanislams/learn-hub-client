@@ -1,56 +1,79 @@
-// src/pages/AllCourses.jsx
-import React, { useEffect, useState } from "react";
-import CourseCard from "../components/CourseCard";
+import React, { useState, useEffect } from "react";
 import useAxios from "../hooks/UseAxios";
+import CourseCard from "../components/CourseCard";
 
 const AllCourses = () => {
   const AxiosInstance = useAxios()
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState(""); // selected category
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const queries = category ? `?category=${encodeURIComponent(category)}` : "";
-    setLoading(true);
-    AxiosInstance.get("/course")
-      .get(`/courses${queries}`)
-      .then((res) => setCourses(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, [category, AxiosInstance]);
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const res = await AxiosInstance.get("/course"); // fetch all courses
+        setCourses(res.data);
 
-  useEffect(() => {
-    AxiosInstance.get("/course")
-      .get("/courses/categories")
-      .then((res) => setCategories(res.data || []))
-      .catch(() => setCategories([]));
+        // derive unique categories from course data
+        const uniqueCategories = [...new Set(res.data.map((c) => c.category))];
+        setCategories(uniqueCategories);
+      } catch (err) {
+        console.error("Failed to load courses:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
   }, [AxiosInstance]);
 
+  // filtered courses based on selected category
+  const filteredCourses = category
+    ? courses.filter((c) => c.category === category)
+    : courses;
+
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold">All Courses</h2>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded"
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="heading">All Courses</h1>
+
+      {/* Category filter */}
+      <div className="mb-6 flex gap-4">
+        <button
+          onClick={() => setCategory("")}
+          className={`px-4 py-2 rounded ${
+            category === "" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
         >
-          <option value="">All categories</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+          All
+        </button>
+        {categories.map((course) => (
+          <button
+            key={course}
+            onClick={() => setCategory(course)}
+            className={`px-4 py-2 rounded ${
+              category === course ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            {course}
+          </button>
+        ))}
       </div>
 
+      {/* Courses grid */}
       {loading ? (
-        <div>Loading...</div>
+        <p>Loading courses...</p>
+      ) : filteredCourses.length === 0 ? (
+        <div className="grid md:grid-cols-3 gap-6">
+          {courses.map((course) => (
+            <CourseCard key={course._id} course={course} />
+          ))}
+        </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
-          {courses.map((c) => (
-            <CourseCard key={c._id} course={c} />
+          {filteredCourses.map((course) => (
+            <CourseCard key={course._id} course={course} />
           ))}
         </div>
       )}

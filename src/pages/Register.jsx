@@ -38,7 +38,7 @@ const Register = () => {
         updateUser({ displayName: name, photoURL: photo })
           .then(() => {
             setUser({ ...user, displayName: name, photoURL: photo });
-            navigate("/");
+        navigate(`${location.state ? location.state : "/"}`);
           })
           .catch(() => {
             toast.error("Something Went Wrong, Please try again");
@@ -49,7 +49,7 @@ const Register = () => {
 
   return (
     <div className="container mx-auto py-10 max-w-md">
-      <h2 className="text-2xl font-semibold mb-4">Register</h2>
+      <h2 className="heading">Register</h2>
       <form
         onSubmit={handleCreateUser}
         className="space-y-4 bg-white p-6 rounded shadow"

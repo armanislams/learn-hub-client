@@ -11,7 +11,7 @@ const AddCourse = () => {
   const [form, setForm] = useState({
     title: "",
     image: "",
-    price: "",
+    price: Number(""),
     duration: "",
     category: "",
     description: "",
@@ -42,46 +42,40 @@ const AddCourse = () => {
 
 
   return (
-    <div className="container mx-auto py-10 mt-5 rounded-2xl bg-white">
-          <h1 className="text-2xl font-bold text-center mb-6">
-            Add Course Details
-          </h1>
-        
+    <div className="container mx-auto py-10 rounded-2xl ">
+      <h1 className="heading">Add Course Details</h1>
+
       <form
         onSubmit={handleSubmit}
-        className="grid md:grid-cols-2 gap-6 p-6 rounded shadow"
+        className="bg-white grid md:grid-cols-2 gap-6 p-6 rounded shadow"
       >
         <input
           placeholder="Title"
           value={form.title}
           onChange={(e) => handleChange("title", e.target.value)}
-          
           required
         />
         <input
           placeholder="Image URL"
           value={form.image}
           onChange={(e) => handleChange("image", e.target.value)}
-          
           required
         />
         <input
           placeholder="Price"
           value={form.price}
           onChange={(e) => handleChange("price", e.target.value)}
-          
           required
         />
         <input
           placeholder="Duration"
           value={form.duration}
           onChange={(e) => handleChange("duration", e.target.value)}
-          
         />
         <select
           value={form.category}
           onChange={(e) => handleChange("category", e.target.value)}
-          className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="p-2 border rounded-md col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">Select Category</option>
           <option value="Web Development">Web Development</option>

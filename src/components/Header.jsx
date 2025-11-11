@@ -13,15 +13,14 @@ const Header = () => {
       }`;
 
   // Check if we are in the dashboard layout
-  const isDashboard = location.pathname.startsWith("/dashboard");
-  console.log(isDashboard);
+    const isDashboard = location.pathname.startsWith("/dashboard");
   const links = (
     <>
       <li>
         <NavLink className={navLinkClasses} to={"/"}>Home</NavLink>
       </li>
       <li>
-        <NavLink className={navLinkClasses} to={"/all-course"}>Courses</NavLink>
+        <NavLink className={navLinkClasses} to={"/all-course"}>All Courses</NavLink>
       </li>
       <li>
         <NavLink className={navLinkClasses} to={"/dashboard"}>Dashboard</NavLink>

@@ -8,7 +8,7 @@ import { AuthContext } from "../Provider/AuthContext";
 
 const CourseDetails = () => {
   const { user } = use(AuthContext);
-  const { id } = useParams();
+  const { id } = useParams(); // this is courseId
   const navigate = useNavigate();
   const AxiosInstance = useAxios();
 
@@ -17,13 +17,22 @@ const CourseDetails = () => {
   const [enrolling, setEnrolling] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
-  // Fetch course data
+  // Fetch course data & enrollment status on page load
   useEffect(() => {
-    const fetchCourse = async () => {
+    const fetchCourseAndEnrollment = async () => {
       setLoading(true);
       try {
+        // 1️⃣ Fetch course info
         const courseRes = await AxiosInstance.get(`/course/${id}`);
         setCourse(courseRes.data);
+
+        // 2️⃣ Check enrollment
+        if (user?.email) {
+          const enrollRes = await AxiosInstance.get(`/enrollments/${id}`, {
+            params: { email: user.email },
+          });
+          setIsEnrolled(enrollRes.data.enrolled);
+        }
       } catch (err) {
         console.error(err);
         toast.error("Failed to load course data.");
@@ -31,11 +40,14 @@ const CourseDetails = () => {
         setLoading(false);
       }
     };
-    fetchCourse();
-  }, [AxiosInstance, id]);
 
-  // Enroll function
+    fetchCourseAndEnrollment();
+  }, [AxiosInstance, id, user?.email]);
+
+  // Enroll button
   const handleEnroll = async () => {
+    if (!user) return toast.error("Login to enroll.");
+
     setEnrolling(true);
 
     try {
@@ -59,7 +71,7 @@ const CourseDetails = () => {
     }
   };
 
-  // Delete function
+  // Delete course
   const handleDelete = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -83,7 +95,7 @@ const CourseDetails = () => {
     }
   };
 
-  // Navigate to update
+  // Update course
   const handleUpdate = () => {
     navigate(`/update-course/${id}`);
   };
