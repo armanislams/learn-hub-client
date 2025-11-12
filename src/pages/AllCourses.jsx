@@ -46,7 +46,7 @@ const AllCourses = () => {
         <button
           onClick={() => setCategory("")}
           className={`px-4 py-2 rounded ${
-            category === "" ? "bg-blue-500 text-base-content" : "bg-gray-200"
+            category === "" ? "bg-indigo-500 text-" : "bg-gray-600"
           }`}
         >
           All
@@ -56,7 +56,7 @@ const AllCourses = () => {
             key={course}
             onClick={() => setCategory(course)}
             className={`px-4 py-2 rounded ${
-              category === course ? "bg-blue-500 text-base-content" : "bg-gray-200"
+              category === course ? "bg-blue-500 text-base-content" : "bg-gray-600"
             }`}
           >
             {course}
