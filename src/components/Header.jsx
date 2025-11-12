@@ -8,11 +8,11 @@ const Header = () => {
   const { toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
     const navLinkClasses = ({ isActive }) =>
-      `font-semibold px-3 py-2 transition-colors duration-200 ${
+      `font-semibold px-3 py-2 text-base-content transition-colors duration-200 ${
         isActive
-          ? "bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-500"
-          : " hover:bg-indigo-700 "
-        }`;
+          ? "bg-indigo-600  px-4 py-2 rounded-lg text-white hover:bg-indigo-500"
+          : " hover:bg-indigo-700"
+      }`;
 
     const isDashboard = location.pathname.startsWith("/dashboard");
   const links = (
@@ -76,9 +76,11 @@ const Header = () => {
               {isDashboard ? dashboard : links}
             </ul>
           </div>
-          <Link to="/" className="text-2xl font-bold  text-indigo-600">
+          <div>
+            <Link to="/" className="text-2xl font-bold  text-indigo-600">
             LearnHub
           </Link>
+          </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
@@ -119,14 +121,14 @@ const Header = () => {
           {user ? (
             <button
               onClick={logOut}
-              className="bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-700"
+              className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700"
             >
               Logout
             </button>
           ) : (
             <Link
               to="/login"
-              className="bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-700"
+              className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700"
             >
               Login
             </Link>

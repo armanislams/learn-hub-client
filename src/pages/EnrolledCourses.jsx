@@ -10,7 +10,7 @@ import { Link } from "react-router";
 const EnrolledCourses = () => {
   useTitle('Enrolled Courses')
   const AxiosInstance = useAxios();
-  const { user, loading } = use(AuthContext);
+  const { user, loading,setLoading } = use(AuthContext);
   const [courses, setCourses] = useState([]);
   useEffect(() => {
     const fetchEnrolledCourses = async () => {
@@ -27,13 +27,15 @@ const EnrolledCourses = () => {
         );
 
         setCourses(coursesData);
+        
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
-
-    if (user?.email) fetchEnrolledCourses();
-  }, [AxiosInstance, user?.email]);
+    fetchEnrolledCourses();
+  }, [AxiosInstance, user?.email,setLoading]);
 
   return (
     <div className="container mx-auto py-10">

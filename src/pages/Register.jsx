@@ -1,17 +1,23 @@
-import React, { use } from "react";
-
-import { useNavigate } from "react-router-dom";
+import React, { use, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
 import { toast } from "react-toastify";
 import useTitle from "../hooks/useTitle";
+import { Eye } from "lucide";
 
 const Register = () => {
     useTitle('Register')
   const { createUser, setUser, updateUser, GoogleLogin } =
     use(AuthContext);
   const navigate = useNavigate();
+  const [show, setShow] = useState(false)
 
   const regEx = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
+
+  const handleShow = () => {
+    setShow(!show)
+  }
 
   const handleGLogin = () => {
     GoogleLogin()
@@ -33,7 +39,8 @@ const Register = () => {
     const password = e.target.password.value;
     const photo = e.target.photo.value;
     if (!regEx.test(password)) {
-      toast.error("pass");
+      toast.error("Please Check Your Password");
+      return
     } else {
       createUser(email, password).then((result) => {
         const user = result.user;
@@ -51,49 +58,59 @@ const Register = () => {
 
   return (
     <div className="container mx-auto py-10 max-w-md">
-      <h2 className="heading">Register</h2>
       <form
         onSubmit={handleCreateUser}
         className="space-y-4 bg-white p-6 rounded shadow"
       >
+        <h2 className="text-2xl font-bold mb-6 text-black text-center">
+          Register
+        </h2>
         <input
           placeholder="Name"
           name="name"
-          className="p-2 border w-full"
+          className="p-2 border w-full text-black"
           required
         />
         <input
           placeholder="Email"
           name="email"
-          className="p-2 border w-full"
+          className="p-2 border w-full text-black"
           required
         />
         <input
           placeholder="Photo URL"
           name="photo"
-          className="p-2 border w-full"
+          className="p-2 border w-full text-black"
         />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          className="p-2 border w-full"
-          required
-        />
-        <p className="text-base-contentxs ">
+        <div className="relative">
+          <input
+            type={show ? "text" : "password"}
+            placeholder="Password"
+            name="password"
+            className="p-2 border w-full text-black"
+            required
+          />
+          <div
+            onClick={handleShow}
+            className="hover:cursor-pointer absolute top-3 right-3 text-black"
+          >
+            {show ? <FaEyeSlash /> : <FaEye />}
+          </div>
+        </div>
+        <p className="text-xs text-black">
           - Must have an Uppercase & Lowercase letter in the password <br />-
           Length must be at least 6 characters
         </p>
         <button
           type="submit"
-          className="bg-indigo-600 text-base-content px-4 py-2 rounded w-full"
+          className="bg-indigo-600 text-white px-4 py-2 font-semibold rounded w-full"
         >
           Register
         </button>
         {/* Google */}
         <button
           onClick={handleGLogin}
-          className="btn bg-white text-base-content w-full border-[#e5e5e5]"
+          className="btn  dark:bg-indigo-500 dark:text-white w-full border-[#e5e5e5]"
         >
           <svg
             aria-label="Google logo"
@@ -124,6 +141,12 @@ const Register = () => {
           </svg>
           Login with Google
         </button>
+      <div className="text-black text-sm">
+        Already have an account?{" "}
+        <Link to="/login" className=" text-indigo-600">
+          Login
+        </Link>
+      </div>
       </form>
     </div>
   );

@@ -11,17 +11,16 @@ const ErrorPage = () => {
     }
     return (
       <div className="min-h-screen flex items-center justify-center bg-none">
-        <div className="text-base-contentcenter">
-          {/* <h1 className="text-base-content6xl font-bold">404</h1> */}
-          {/* <p className="text-base-content2xl mt-2 w-1/3 font-semibold mx-auto ">{code}</p> */}
+        <div className="text-base-content text-center">
+         
           <div className="mockup-code w-full">
-            <pre data-prefix=">" className="text-base-contentarning">
+            <pre data-prefix=">" className="text-warning">
               <code>Look like you're lost</code>
             </pre>
-            <pre data-prefix=">" className="text-base-contentarning">
+            <pre data-prefix=">" className="text-warning">
               <code>the page you are looking for not available!</code>
             </pre>
-            <pre data-prefix=">" className="text-base-contentarning">
+            <pre data-prefix=">" className="text-warning">
               <code> Go back</code>
             </pre>
           </div>

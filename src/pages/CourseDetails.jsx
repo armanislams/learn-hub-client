@@ -43,8 +43,6 @@ const CourseDetails = () => {
 
   // Enroll button
   const handleEnroll = async () => {
-    if (!user) return toast.error("Login to enroll.");
-
     setEnrolling(true);
 
     try {
@@ -55,7 +53,6 @@ const CourseDetails = () => {
 
       if (res.data.message === "Already Enrolled") {
         setIsEnrolled(true);
-        toast.info("You are already enrolled in this course.");
       } else {
         setIsEnrolled(true);
         toast.success("Enrolled successfully!");
@@ -84,7 +81,7 @@ const CourseDetails = () => {
       try {
         await AxiosInstance.delete(`/course/${id}`);
         toast.success("Course deleted successfully!");
-        navigate("/all-courses");
+        navigate("/all-course");
       } catch (err) {
         console.error(err);
         toast.error("Failed to delete course.");
@@ -128,7 +125,7 @@ const CourseDetails = () => {
           <div className="mt-6 space-y-3">
             <button
               onClick={handleEnroll}
-              disabled={isEnrolled || enrolling || !user}
+              disabled={isEnrolled || enrolling}
               className={`w-full py-2 rounded transition text-white font-medium ${
                 !user
                   ? "bg-gray-400 cursor-not-allowed"

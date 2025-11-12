@@ -1,17 +1,15 @@
 import { motion } from "framer-motion";
 import useAxios from "../hooks/UseAxios";
-import { useState, useEffect, use, useContext } from "react";
+import { useState, useEffect, use } from "react";
 import { Link } from "react-router";
 import CourseCard from "../components/CourseCard";
 import useTitle from "../hooks/useTitle";
 import { AuthContext } from "../Provider/AuthContext";
-import { ThemeContext } from "../Provider/ThemeContextDefinition";
 
 const Home = () => {
   useTitle("Home");
   const [courses, setCourses] = useState([]);
   const { loading, setLoading } = use(AuthContext);
-  const { theme } = useContext(ThemeContext);
   const [error, setError] = useState(null);
   const AxiosInstance = useAxios();
 
@@ -20,11 +18,12 @@ const Home = () => {
       try {
         setLoading(true);
         const response = await AxiosInstance.get("/course");
-        setCourses(Array.isArray(response.data) ? response.data : []);
+        const featuredCourses = response.data.filter((c) => c.isFeatured);
+        setCourses(featuredCourses.slice(0, 6));
       } catch (error) {
         console.error("Error fetching courses:", error);
         setError(error.message);
-        setCourses([]); // Set empty array if error occurs
+        setCourses([]);
       } finally {
         setLoading(false);
       }

@@ -5,7 +5,7 @@ const Loader = () => {
     return (
         <div className='min-h-screen w-full mx-auto flex gap-10 justify-center items-center bg-gray-50 '>
             <img className='w-1/12 animate-pulse' src={'/public/codeIcon.png'} alt="" />
-            <h1 className='text-base-content4xl font-bold'>Loading...</h1>
+            <h1 className='text-base-content text-4xl font-bold'>Loading...</h1>
         </div>
     );
 };

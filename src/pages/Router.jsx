@@ -13,26 +13,23 @@ import AddCourse from './AddCourse';
 import Dashboard from './Dashboard';
 import MyCourses from './MyCourses';
 import EnrolledCourses from './EnrolledCourses';
+import Loader from '../components/Loader';
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
+    errorElement: <ErrorPage></ErrorPage>,
+    HydrateFallback: <Loader></Loader>,
     children: [
       {
         index: true,
         Component: Home,
       },
-      {
-        path: "/*",
-        Component: ErrorPage,
-      },
-      {
-        // path: '/all-course',
-        // element: <PrivateRoute>
-        //     <AllCourses></AllCourses>
-        // </PrivateRoute>
-      },
+      // {
+      //   path: "/*",
+      //   Component: ErrorPage,
+      // },
       {
         path: "/login",
         Component: Login,

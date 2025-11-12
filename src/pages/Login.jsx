@@ -1,15 +1,20 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthContext";
 import { toast } from "react-toastify";
 import useTitle from "../hooks/useTitle";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
     useTitle('Login')
   const { setUser, GoogleLogin, signIn } = use(AuthContext);
 
     const navigate = useNavigate();
-    const location = useLocation();
+  const location = useLocation();
+   const [show, setShow] = useState(false);
+   const handleShow = () => {
+     setShow(!show);
+   };
   const handleGLogin = () => {
     GoogleLogin()
       .then((result) => {
@@ -19,7 +24,8 @@ const Login = () => {
         toast.success("Successfully Logged In With Google");
         navigate(`${location.state ? location.state : "/"}`);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         toast.error("Something Went Wrong. Please Try Again");
       });
   };
@@ -27,29 +33,57 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-      signIn(email, password);
-              navigate(`${location.state ? location.state : "/"}`);
+      signIn(email, password)
+      .then(() => {
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+        .catch(() => {
+          toast.error("Email or Password doesn't Match, Please Try again");
+          e.target.reset()
+    })
 
   };
 
   return (
     <div className="container mx-auto py-10 max-w-md">
-      <h2 className="heading">Login</h2>
-      <form onSubmit={handleSignIn} className="space-y-4 bg-white p-6 rounded shadow">
-        <input placeholder="Email" name="email" className="p-2 border w-full" required />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          className="p-2 border w-full"
-          required
-        />
-        <button type="submit" className="bg-indigo-600 text-base-content px-4 py-2 rounded w-full">
+      <div className="bg-white p-6 rounded shadow space-y-4">
+        <h2 className="text-2xl font-bold mb-6 text-black text-center">
           Login
-        </button>
+        </h2>
+        <form onSubmit={handleSignIn} className="space-y-4 p-6 rounded shadow">
+          <input
+            placeholder="Email"
+            name="email"
+            className="p-2 border w-full text-black"
+            required
+          />
+          <div className="relative">
+            <input
+              type={show ? 'text':'password'}
+              placeholder="Password"
+              name="password"
+              className="p-2 border w-full text-black"
+              required
+            />
+            <div>
+              <div
+                onClick={handleShow}
+                className="hover:cursor-pointer absolute top-3 right-3 text-black"
+              >
+                {show ? <FaEyeSlash /> : <FaEye />}
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded w-full"
+          >
+            Login
+          </button>
+        </form>
         <button
           onClick={handleGLogin}
-          className="btn bg-white text-base-content w-full border-[#e5e5e5]"
+          className="btn  dark:bg-indigo-500 dark:text-white w-full border-[#e5e5e5]"
         >
           <svg
             aria-label="Google logo"
@@ -57,6 +91,7 @@ const Login = () => {
             height="16"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
+            className="rounded-full"
           >
             <g>
               <path d="m0 0H512V512H0" fill="#fff"></path>
@@ -80,13 +115,13 @@ const Login = () => {
           </svg>
           Login with Google
         </button>
-        <div className="text-base-contentsm">
+        <div className="text-black text-sm">
           Don't have an account?{" "}
-          <Link to="/register" className="text-base-contentindigo-600">
+          <Link to="/register" className=" text-indigo-600">
             Register
           </Link>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
