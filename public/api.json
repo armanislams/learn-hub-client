@@ -1,4 +1,4 @@
-
+[
   {
     "_id": { "$oid": "673a01aaf001111111111005" },
     "title": "Mobile App Development with React Native",
@@ -6,51 +6,57 @@
     "price": 139.99,
     "duration": "8 weeks",
     "category": "Mobile Development",
-    "description": "Create cross-platform mobile apps using React Native and integrate APIs for real-time functionality."
+    "description": "Create cross-platform mobile apps using React Native and integrate APIs for real-time functionality.",
+    "isFeatured": true
   },
   {
     "_id": { "$oid": "673a01aaf001111111111006" },
     "title": "Machine Learning Fundamentals",
-    "image": "https://images.pexels.com/photos/843891/pexels-photo-843891.jpeg",
+    "image": "https://imgur.com/a/qvgypRZ",
     "price": 159.99,
     "duration": "10 weeks",
     "category": "AI & ML",
-    "description": "Understand supervised and unsupervised learning, regression models, and neural networks using scikit-learn and TensorFlow."
+    "description": "Understand supervised and unsupervised learning, regression models, and neural networks using scikit-learn and TensorFlow.",
+    "isFeatured": false
   },
   {
     "_id": { "$oid": "673a01aaf001111111111007" },
     "title": "Cybersecurity & Ethical Hacking",
-    "image": "https://images.pexels.com/photos/5380643/pexels-photo-5380643.jpeg",
+    "image": "https://i.ibb.co/jPvwsz1D/Cybersecurity-and-Ethical-Hacking.jpg",
     "price": 119.99,
     "duration": "6 weeks",
     "category": "Security",
-    "description": "Learn ethical hacking, penetration testing, and network security techniques to protect systems from cyber threats."
+    "description": "Learn ethical hacking, penetration testing, and network security techniques to protect systems from cyber threats.",
+    "isFeatured": true
   },
   {
     "_id": { "$oid": "673a01aaf001111111111008" },
     "title": "Photography Masterclass",
-    "image": "https://images.pexels.com/photos/1483937/pexels-photo-1483937.jpeg",
+    "image": "https://i.ibb.co/1GGkm7Z2/41-UJSVYa2y-L-SY445-SX342-QL70-FMwebp.webp",
     "price": 79.99,
     "duration": "4 weeks",
     "category": "Photography",
-    "description": "Master professional photography, lighting, and post-processing using Adobe Lightroom and Photoshop."
+    "description": "Master professional photography, lighting, and post-processing using Adobe Lightroom and Photoshop.",
+    "isFeatured": false
   },
   {
     "_id": { "$oid": "673a01aaf001111111111009" },
     "title": "Blockchain Development",
-    "image": "https://images.pexels.com/photos/730564/pexels-photo-730564.jpeg",
+    "image": "https://i.ibb.co/rRj6bpKF/blockchain.jpg",
     "price": 179.99,
     "duration": "9 weeks",
     "category": "Blockchain",
-    "description": "Learn blockchain architecture, smart contracts, and decentralized app (dApp) development using Solidity and Ethereum."
+    "description": "Learn blockchain architecture, smart contracts, and decentralized app (dApp) development using Solidity and Ethereum.",
+    "isFeatured": true
   },
   {
     "_id": { "$oid": "673a01aaf001111111111010" },
     "title": "Video Editing for Beginners",
-    "image": "https://images.pexels.com/photos/6894030/pexels-photo-6894030.jpeg",
+    "image": "https://i.ibb.co/qXMt4q5/66fec91fc4a79a2d0a4cf706-scaled-cover.png",
     "price": 59.99,
     "duration": "3 weeks",
     "category": "Video Editing",
-    "description": "Edit stunning videos using Adobe Premiere Pro and DaVinci Resolve. Learn transitions, effects, and storytelling techniques."
+    "description": "Edit stunning videos using Adobe Premiere Pro and DaVinci Resolve. Learn transitions, effects, and storytelling techniques.",
+    "isFeatured": false
   }
 ]

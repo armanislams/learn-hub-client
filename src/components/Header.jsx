@@ -1,12 +1,20 @@
-import React, { use, useContext } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
-import { ThemeContext } from "../Provider/ThemeContextDefinition";
 
 const Header = () => {
   const { user, logOut } = use(AuthContext);
-  const { toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
+  const [theme, setTheme]=useState(localStorage.getItem('theme')|| 'light')
+  useEffect(() => {
+    const html = document.querySelector("html");
+          html.setAttribute("data-theme", theme);
+          localStorage.setItem('theme', theme)
+
+  },[theme])
+  const handleTheme = (checked) => {
+    setTheme(checked? 'dark':'light')
+  }
     const navLinkClasses = ({ isActive }) =>
       `font-semibold px-3 py-2 text-base-content transition-colors duration-200 ${
         isActive
@@ -78,8 +86,8 @@ const Header = () => {
           </div>
           <div>
             <Link to="/" className="text-2xl font-bold  text-indigo-600">
-            LearnHub
-          </Link>
+              LearnHub
+            </Link>
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
@@ -90,7 +98,7 @@ const Header = () => {
         </div>
 
         <div className="navbar-end gap-5">
-          <div onChange={(e) => toggleTheme(e.target.checked)}>
+          <div onChange={(e) => handleTheme(e.target.checked)}>
             <label className="swap swap-rotate">
               {/* this hidden checkbox controls the state */}
               <input

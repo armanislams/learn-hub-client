@@ -46,7 +46,7 @@ const EnrolledCourses = () => {
       ) : courses.length === 0 ? (
         <div className="flex flex-col justify-center items-center">
           <h1 className="heading">
-            You Are Not Enrolled to any Courses Yet. Check Out Our Courses
+            You May Not Enrolled to any Courses Yet. Check Out Our Courses or refresh again.
           </h1>
           <Link to={"/all-course"}>
             <button className="bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-700">

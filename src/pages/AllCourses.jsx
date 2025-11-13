@@ -30,7 +30,7 @@ const AllCourses = () => {
     };
 
     fetchCourses();
-  }, [AxiosInstance]);
+  }, [AxiosInstance,setLoading]);
 
   // filtered courses based on selected category
   const filteredCourses = category
@@ -45,7 +45,7 @@ const AllCourses = () => {
       <div className="mb-6 flex gap-4">
         <button
           onClick={() => setCategory("")}
-          className={`px-4 py-2 rounded ${
+          className={`px-4 py-2 rounded-lg text-white font-semibold ${
             category === "" ? "bg-indigo-500 text-" : "bg-gray-600"
           }`}
         >
@@ -55,8 +55,8 @@ const AllCourses = () => {
           <button
             key={course}
             onClick={() => setCategory(course)}
-            className={`px-4 py-2 rounded ${
-              category === course ? "bg-blue-500 text-base-content" : "bg-gray-600"
+            className={`px-4 py-2 rounded-lg text-white font-semibold ${
+              category === course ? "bg-blue-500 " : "bg-gray-600"
             }`}
           >
             {course}

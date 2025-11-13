@@ -95,7 +95,8 @@ const CourseDetails = () => {
   };
 
   if (loading) return <Loader />;
-  if (!course) return <div className="text-center py-10 text-base-content">Course not found</div>;
+  // if (!course) return <div className="text-center py-10 text-base-content">Course not found</div>;
+  if (!course) return <Loader></Loader>;
 
   return (
     <div className="container mx-auto py-10 px-4">

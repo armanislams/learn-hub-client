@@ -1,15 +1,13 @@
-import React, { use, useState, useContext } from "react";
+import React, { use, useState } from "react";
 import { AuthContext } from "../Provider/AuthContext";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import useTitle from "../hooks/useTitle";
-import { ThemeContext } from "../Provider/ThemeContextDefinition";
 
 const AddCourse = () => {
   useTitle('Add Course')
   const { user } = use(AuthContext)
-  useContext(ThemeContext);
   const AxiosInstance = useAxios()
   const navigate = useNavigate()
   const [form, setForm] = useState({

@@ -1,15 +1,13 @@
-import React, { use, useEffect, useState, useContext } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
 import useAxios from "../hooks/UseAxios";
 import Loader from "../components/Loader";
 import useTitle from "../hooks/useTitle";
-import { ThemeContext } from "../Provider/ThemeContextDefinition";
 
 const Dashboard = () => {
     useTitle('Dashboard')
   const { user, loading, setLoading } = use(AuthContext);
-  useContext(ThemeContext);
   const AxiosInstance = useAxios();
   const navigate = useNavigate();
 

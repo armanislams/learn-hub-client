@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => (
-  <footer className="bg-gray-900 text-white text-center py-6 mt-16">
+  <footer className="bg-gray-900 text-white text-center py-6">
     <Link to="/" className="text-2xl font-bold  text-indigo-600">
       LearnHub
     </Link>
