@@ -29,6 +29,7 @@ const Login = () => {
         toast.error("Something Went Wrong. Please Try Again");
       });
   };
+  //user login
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -41,7 +42,15 @@ const Login = () => {
           toast.error("Email or Password doesn't Match, Please Try again");
           e.target.reset()
     })
-
+  };
+  //demo login
+  const handleDemoSignIn = () => {
+    const email = "demo@learn-hub.com";
+    const password = "@learnHub";
+      signIn(email, password)
+      .then(() => {
+        navigate(`${location.state ? location.state : "/"}`);
+      })
   };
 
   return (
@@ -59,7 +68,7 @@ const Login = () => {
           />
           <div className="relative">
             <input
-              type={show ? 'text':'password'}
+              type={show ? "text" : "password"}
               placeholder="Password"
               name="password"
               className="p-2 border w-full text-black"
@@ -114,6 +123,13 @@ const Login = () => {
             </g>
           </svg>
           Login with Google
+        </button>
+        <button
+          onClick={handleDemoSignIn}
+          type="submit"
+          className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded w-full"
+        >
+          Demo User Login
         </button>
         <div className="text-black text-sm">
           Don't have an account?{" "}

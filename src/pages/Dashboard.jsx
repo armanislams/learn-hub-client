@@ -1,80 +1,229 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
-import useAxios from "../hooks/UseAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import useTitle from "../hooks/useTitle";
-import Loader from "../components/Common/Loader";
+import { useQuery } from "@tanstack/react-query";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const Dashboard = () => {
-    useTitle('Dashboard')
-  const { user, loading, setLoading } = use(AuthContext);
-  const AxiosInstance = useAxios();
+  useTitle("Dashboard");
+  const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
-  const [courses, setCourses] = useState([]);
-  const [totalEnrollments, setTotalEnrollments] = useState(0);
+  // Fetch user profile data (experience, certifications, etc)
+  const { data: profileData = {} } = useQuery({
+    queryKey: ["userProfile", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return {};
+      const res = await axiosSecure.get(`/user/${user.email}`);
+      return res.data;
+    },
+    enabled: !!user?.email,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+  // Fetch instructor courses
+  const { data: courses = [] } = useQuery({
+    queryKey: ["instructorCourses", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const res = await axiosSecure.get(`/course?instructor=${user.email}`);
+      return Array.isArray(res.data) ? res.data : [];
+    },
+    enabled: !!user?.email,
+  });
 
-        const coursesRes = await AxiosInstance.get(
-          `/course?instructor=${user.email}`
-        );
-        setCourses(coursesRes.data);
+  // Fetch enrollments
+  const { data: enrollments = [] } = useQuery({
+    queryKey: ["enrollments", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      const res = await axiosSecure.get(`/enrollments?instructor=${user.email}`);
+      return Array.isArray(res.data) ? res.data : [];
+    },
+    enabled: !!user?.email,
+  });
 
-        const enrollmentsRes = await AxiosInstance.get(
-          `/enrollments?instructor=${user.email}`
-        );
-        setTotalEnrollments(enrollmentsRes.data.length);
-      } catch (err) {
-        console.error("Failed to fetch dashboard data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [AxiosInstance, user.email, setLoading]);
-
-  if (loading) {
-    return <Loader></Loader>
+  if (!user) {
+    return <p>Please log in to access dashboard.</p>;
   }
+
+  // Sample chart data
+  const enrollmentData = [
+    { month: "Jan", enrollments: 65 },
+    { month: "Feb", enrollments: 78 },
+    { month: "Mar", enrollments: 92 },
+    { month: "Apr", enrollments: 81 },
+    { month: "May", enrollments: 105 },
+    { month: "Jun", enrollments: 118 },
+  ];
+
+  const courseRatingsData = [
+    { name: courses[0]?.title || "Course 1", rating: 4.8 },
+    { name: courses[1]?.title || "Course 2", rating: 4.5 },
+    { name: courses[2]?.title || "Course 3", rating: 4.9 },
+    { name: courses[3]?.title || "Course 4", rating: 4.6 },
+  ];
+
+  const categoryData = [
+    { name: "Web Development", value: courses.filter(c => c.category === "Web Development").length },
+    { name: "Mobile", value: courses.filter(c => c.category === "Mobile").length },
+    { name: "Data Science", value: courses.filter(c => c.category === "Data Science").length },
+    { name: "UI/UX", value: courses.filter(c => c.category === "UI/UX").length },
+  ];
+
+  const COLORS = ["#4F46E5", "#2563EB", "#10B981", "#F59E0B"];
 
   return (
     <div className="container mx-auto py-10">
-      {/* Instructor Info */}
-      <div className="flex items-center gap-4 mb-6 p-4 bg-base-100 rounded-lg shadow">
-        <img
-          src={user.photoURL}
-          alt={user.displayName}
-          className="w-16 h-16 rounded-full"
-        />
-        <div>
-          <h2 className="text-xl font-semibold text-base-content">{user.displayName}</h2>
-          <p className="text-base-content/70">{user.email}</p>
+      {/* Instructor Header */}
+      <div className="bg-linear-to-r from-indigo-600 to-blue-600 text-white rounded-lg shadow-lg p-8 mb-6">
+        <div className="flex items-center gap-6">
+          <img
+            src={user?.photoURL || "https://via.placeholder.com/120"}
+            alt={user?.displayName}
+            className="w-24 h-24 rounded-full border-4 border-white"
+          />
+          <div>
+            <h1 className="text-4xl font-bold mb-2">{user?.displayName}</h1>
+            <p className="text-indigo-100 text-lg">{user?.email}</p>
+          </div>
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-base-100 p-4 rounded shadow hover:shadow-md transition">
-          <h3 className="text-base-content/70 text-sm font-medium">My Courses</h3>
-          <p className="text-3xl font-bold text-base-content mt-2">{courses.length}</p>
-        </div>
-        <div className="bg-base-100 p-4 rounded shadow hover:shadow-md transition">
-          <h3 className="text-base-content/70 text-sm font-medium">Featured Courses</h3>
-          <p className="text-3xl font-bold text-base-content mt-2">
-            {courses.filter((c) => c.isFeatured).length}
+      
+
+      
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-indigo-50 dark:bg-indigo-900 rounded-lg p-4 text-center">
+          <p className="text-2xl font-bold text-indigo-600">
+            {profileData?.enrolledCourses || 0}
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Enrolled Courses
           </p>
         </div>
-        <div className="bg-base-100 p-4 rounded shadow hover:shadow-md transition">
-          <h3 className="text-base-content/70 text-sm font-medium">Total Enrollments</h3>
-          <p className="text-3xl font-bold text-base-content mt-2">{totalEnrollments}</p>
+        <div className="bg-blue-50 dark:bg-blue-900 rounded-lg p-4 text-center">
+          <p className="text-2xl font-bold text-blue-600">{courses.length}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">My Courses</p>
+        </div>
+        <div className="bg-green-50 dark:bg-green-900 rounded-lg p-4 text-center">
+          <p className="text-2xl font-bold text-green-600">
+            {courses.filter((c) => c.isFeatured).length}
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Featured Courses
+          </p>
+        </div>
+        <div className="bg-purple-50 dark:bg-purple-900 rounded-lg p-4 text-center">
+          <p className="text-2xl font-bold text-purple-600">
+            {profileData?.learningHours || 0}h
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Learning Hours
+          </p>
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Charts Section */}
+      <div className="grid md:grid-cols-2 gap-6 mb-6">
+        {/* Enrollment Trends */}
+        <div className="bg-base-100 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4">📈 Enrollment Trends</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={enrollmentData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="enrollments"
+                stroke="#4F46E5"
+                strokeWidth={2}
+                dot={{ fill: "#4F46E5", r: 5 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Course Ratings */}
+        <div className="bg-base-100 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4">⭐ Course Ratings</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={courseRatingsData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} interval={0} />
+              <YAxis domain={[0, 5]} />
+              <Tooltip />
+              <Bar dataKey="rating" fill="#2563EB" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Course Distribution by Category */}
+        <div className="bg-base-100 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4">📊 Courses by Category</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={categoryData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, value }) => `${name}: ${value}`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {categoryData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Revenue Overview */}
+        <div className="bg-base-100 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4">💰 Revenue Overview</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center pb-2 border-b">
+              <span className="font-semibold">Total Revenue</span>
+              <span className="text-2xl font-bold text-green-600">
+                ${courses.reduce((sum, c) => sum + (c.price * (Math.random() * 50 + 10)), 0).toFixed(2)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center pb-2 border-b">
+              <span className="font-semibold">Average Course Price</span>
+              <span className="text-xl font-bold text-indigo-600">
+                ${courses.length > 0 ? (courses.reduce((sum, c) => sum + c.price, 0) / courses.length).toFixed(2) : "0.00"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold">Total Enrollments</span>
+              <span className="text-xl font-bold text-blue-600">{enrollments.length}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-wrap gap-4 mb-6">
         <button
           onClick={() => navigate("/add-course")}

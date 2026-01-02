@@ -3,17 +3,19 @@ import Hero from "../components/Home/Hero";
 import PopularCourses from "../components/Home/PopularCourses";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import Features from "../components/Home/Features";
+import FaqCta from "../components/Home/FaqCta";
 
 
 const Home = () => {
   useTitle("Home");
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="max-w-7xl mx-auto">
       {/* ---------------- HERO SECTION ---------------- */}
-      <Hero/>
+      <Hero />
 
       {/* ---------------- POPULAR COURSES ---------------- */}
-     <PopularCourses/>
+      <PopularCourses />
 
       {/* ---------------- WHY CHOOSE US ---------------- */}
       <motion.section
@@ -24,7 +26,9 @@ const Home = () => {
         className="w-full py-16 px-4 bg-base-100"
       >
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-base-content">Why Choose Us</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-base-content">
+            Why Choose Us
+          </h2>
           <p className="text-base-content/70 mb-10 max-w-2xl mx-auto">
             Our platform provides an easy-to-use interface, expert instructors,
             and affordable courses for learners of all levels.
@@ -88,6 +92,11 @@ const Home = () => {
           </div>
         </div>
       </motion.section>
+      {/* ---------------- Features ---------------- */}
+      <Features />
+
+      {/* ---------------- FAQ CTA SECTION ---------------- */}
+      <FaqCta />
     </div>
   );
 };

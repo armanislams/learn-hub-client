@@ -16,6 +16,9 @@ import HomeLayout from "../Layouts/HomeLayout";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import ContactUs from "../pages/ContactUs";
 import Loader from "../components/Common/Loader";
+import MyProfile from "../pages/MyProfile";
+import FAQ from "../pages/FAQ";
+import AboutUs from "../pages/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/contact-us",
         Component: ContactUs,
+      },
+      {
+        path: "/about-us",
+        Component: AboutUs,
+      },
+      {
+        path: "/faq",
+        Component: FAQ,
       },
       {
         path: "/course-details/:id",
@@ -86,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/add-course",
        Component: AddCourse
+      },
+      {
+        path: "/dashboard/my-profile",
+       Component: MyProfile
       },
     ],
   },

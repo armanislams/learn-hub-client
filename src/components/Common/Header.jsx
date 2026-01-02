@@ -3,11 +3,12 @@ import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../Provider/AuthContext";
 import ThemeControl from "../ThemeControl";
 import LoginBtn from "./LoginBtn";
+import ProfileMenu from "./ProfileMenu";
 
 const Header = () => {
    const { user} = use(AuthContext);
 
-  // navlink class
+  // nav link class
     const navLinkClasses = ({ isActive }) =>
       `font-semibold px-3 py-2 text-base-content transition-colors duration-200 ${
         isActive
@@ -32,6 +33,11 @@ const Header = () => {
           Contact Us
         </NavLink>
       </li>
+      <li>
+        <NavLink className={navLinkClasses} to={"/about-us"}>
+          About Us
+        </NavLink>
+      </li>
       {user && (
         <li>
           <NavLink className={navLinkClasses} to={"/dashboard"}>
@@ -43,7 +49,7 @@ const Header = () => {
   );
  
   return (
-    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50 md:px-15">
+    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -86,6 +92,7 @@ const Header = () => {
 
       <div className="navbar-end mr-5 hidden lg:flex gap-5">
         <ThemeControl />
+        <ProfileMenu/>
         <LoginBtn />
       </div>
     </div>

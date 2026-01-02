@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 import { MdOutlineBookmarkAdd, MdOutlineBookmarkAdded, MdOutlineBookmarkBorder } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router";
 
@@ -95,6 +95,17 @@ const Sidebar = () => {
               >
                 <MdOutlineBookmarkBorder className="my-1.5 inline-block size-5" />
                 <span className="is-drawer-close:hidden">My Added Course</span>
+              </NavLink>
+            </li>
+            {/* my profile */}
+            <li>
+              <NavLink
+                to={"/dashboard/my-profile"}
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Profile"
+              >
+                <FaUser className="my-1.5 inline-block size-5" />
+                <span className="is-drawer-close:hidden">My Profile</span>
               </NavLink>
             </li>
           </ul>
