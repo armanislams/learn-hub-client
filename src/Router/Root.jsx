@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from './Header';
+import Header from '../components/Header';
 import { Outlet } from 'react-router';
-import Footer from './Footer';
+import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
 
 const Root = () => {

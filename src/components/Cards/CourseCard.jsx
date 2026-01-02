@@ -1,21 +1,28 @@
-import { motion } from 'framer-motion';
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 
-const CourseCard = ({ course }) => (
-  <div>
+const CourseCard = ({course}) => {
+  return (
     <motion.div
       key={course._id}
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       viewport={{ once: true }}
-      className="bg-base-100 rounded-2xl shadow-md overflow-hidden h-100 hover:shadow-xl transition duration-300"
+      className="bg-base-100 rounded-2xl shadow-md overflow-hidden h-80 hover:shadow-xl transition duration-300"
     >
-      <img src={course.imageUrl} alt={course.title} className="w-full h-48 object-cover" />
+      
+      <img
+        src={course.imageUrl}
+        alt={course.title}
+        className="w-full h-48 object-cover"
+      />
       <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2 text-base-content h-13">{course.title}</h3>
-        <p className="text-base-content/70 text-sm mb-3 h-16">{course.description}</p>
+        <h3 className="text-md font-semibold mb-2 text-base-content h-14">
+          {course.title}
+        </h3>
         <Link
           to={`/course-details/${course._id}`}
           className="bg-indigo-600 text-white py-2 w-full px-4 rounded-md flex justify-center items-center font-semibold hover:bg-indigo-700 transition text-sm"
@@ -24,7 +31,7 @@ const CourseCard = ({ course }) => (
         </Link>
       </div>
     </motion.div>
-  </div>
-);
+  );
+};
 
 export default CourseCard;

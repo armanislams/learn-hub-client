@@ -2,10 +2,10 @@ import React, { useState, useEffect, use } from "react";
 import { useParams, useNavigate } from "react-router";
 import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Provider/AuthContext";
 import useTitle from "../hooks/useTitle";
+import Loader from "../components/Common/Loader";
 
 const CourseDetails = () => {
     useTitle('Course Details')
@@ -95,7 +95,6 @@ const CourseDetails = () => {
   };
 
   if (loading) return <Loader />;
-  // if (!course) return <div className="text-center py-10 text-base-content">Course not found</div>;
   if (!course) return <Loader></Loader>;
 
   return (

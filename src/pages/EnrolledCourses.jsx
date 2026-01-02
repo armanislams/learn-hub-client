@@ -1,11 +1,10 @@
-// src/pages/EnrolledCourses.jsx
 import React, { use, useEffect, useState } from "react";
-import CourseCard from "../components/CourseCard";
 import useAxios from "../hooks/UseAxios";
 import { AuthContext } from "../Provider/AuthContext";
-import Loader from "../components/Loader";
 import useTitle from "../hooks/useTitle";
 import { Link } from "react-router";
+import Loader from "../components/Common/Loader";
+import CourseCard from "../components/Cards/CourseCard";
 
 const EnrolledCourses = () => {
   useTitle('Enrolled Courses')

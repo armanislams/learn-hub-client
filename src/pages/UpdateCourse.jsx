@@ -64,9 +64,9 @@ const UpdateCourse = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-6 bg-white mt-5 rounded-xl">
+    <div className="max-w-3xl mx-auto py-10 px-6 bg-blue-950 text-white my-5 rounded-xl ">
       <div>
-        <h1 className="heading">Update Course Details</h1>
+        <h1 className="text-2xl font-bold text-center">Update Course Details</h1>
       </div>
       <form
         onSubmit={handleSubmit}
@@ -74,7 +74,7 @@ const UpdateCourse = () => {
       >
         {/* --- Title --- */}
         <div>
-          <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+          <label className="block text-sm font-medium text-base-content-700 mb-1">
             Course Title
           </label>
           <input
@@ -88,7 +88,7 @@ const UpdateCourse = () => {
 
         {/* --- Image URL --- */}
         <div>
-          <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+          <label className="block text-sm font-medium text-base-content-700 mb-1">
             Image URL
           </label>
           <input
@@ -103,7 +103,7 @@ const UpdateCourse = () => {
         {/* --- Price & Duration --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+            <label className="block text-sm font-medium text-base-content-700 mb-1">
               Price ($)
             </label>
             <input
@@ -116,7 +116,7 @@ const UpdateCourse = () => {
           </div>
 
           <div>
-            <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+            <label className="block text-sm font-medium text-base-content-700 mb-1">
               Duration
             </label>
             <input
@@ -131,7 +131,7 @@ const UpdateCourse = () => {
 
         {/* --- Category --- */}
         <div>
-          <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+          <label className="block text-sm font-medium text-base-content-700 mb-1">
             Category
           </label>
           <select
@@ -150,7 +150,7 @@ const UpdateCourse = () => {
 
         {/* --- Description --- */}
         <div>
-          <label className="block text-base-content text-sm font-medium text-base-content-700 mb-1">
+          <label className="block text-sm font-medium text-base-content-700 mb-1">
             Description
           </label>
           <textarea
@@ -167,7 +167,7 @@ const UpdateCourse = () => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="bg-gray-400 text-base-content px-5 py-2 rounded hover:bg-gray-500 transition"
+            className="bg-gray-400 font-semibold px-5 py-2 rounded hover:bg-gray-500 transition"
           >
             Cancel
           </button>

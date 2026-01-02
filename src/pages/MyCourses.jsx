@@ -1,44 +1,39 @@
-import React, { useState, useEffect, use } from "react";
-import useAxios from "../hooks/UseAxios";
+import React, { useContext } from "react";
 import { AuthContext } from "../Provider/AuthContext";
-import CourseCard from "../components/CourseCard";
+import CourseCard from "../components/Cards/CourseCard";
 import useTitle from "../hooks/useTitle";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "../components/Common/Loader";
 
 const MyCourses = () => {
-  useTitle('My Courses')
-  const [courses, setCourses] = useState([]);
-  const { user, loading, setLoading } = use(AuthContext);
-  const AxiosInstance = useAxios()
+  useTitle("My Courses");
+  const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
-  useEffect(() => {
-    const fetchMyCourses = async () => {
-      try {
-        const res = await AxiosInstance.get("/course");
-        const myCourses = res.data.filter(
-          (course) => course.instructorEmail === user.email
-        );
-        setCourses(myCourses);
-      } catch (err) {
-        console.error("Failed to load your courses:");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data = [], isLoading, isError } = useQuery({
+    queryKey: ["myCourses", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/course");
+      return Array.isArray(res.data)
+        ? res.data.filter((course) => course.instructorEmail === user?.email)
+        : [];
+    },
+    enabled: !!user?.email,
+  });
 
-    fetchMyCourses();
-  }, [user?.email, AxiosInstance, setLoading]);
+  if (isLoading) return <Loader />;
+  if (isError) return <p>Failed to load your courses.</p>;
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="heading">My Added Courses</h1>
+      <h1 className="heading text-center">My Added Courses</h1>
 
-      {loading ? (
-        <p>Loading your courses...</p>
-      ) : courses.length === 0 ? (
-        <p>You haven't added any courses yet.</p>
+      {data.length === 0 ? (
+        <p className="text-center">You haven't added any courses yet.</p>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
-          {courses.map((course) => (
+          {data.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
         </div>
