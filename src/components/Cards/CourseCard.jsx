@@ -11,7 +11,7 @@ const CourseCard = ({course}) => {
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       viewport={{ once: true }}
-      className="bg-base-100 rounded-2xl shadow-md overflow-hidden h-80 hover:shadow-xl transition duration-300"
+      className="bg-base-100 rounded-2xl shadow-md overflow-hidden h-82 hover:shadow-xl transition duration-300"
     >
       
       <img
@@ -20,7 +20,7 @@ const CourseCard = ({course}) => {
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <h3 className="text-md font-semibold mb-2 text-base-content h-14">
+        <h3 className="text-md font-semibold mb-2 text-base-content h-16">
           {course.title}
         </h3>
         <Link

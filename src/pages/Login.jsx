@@ -6,15 +6,14 @@ import useTitle from "../hooks/useTitle";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-    useTitle('Login')
+  useTitle("Login");
   const { setUser, GoogleLogin, signIn } = use(AuthContext);
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-   const [show, setShow] = useState(false);
-   const handleShow = () => {
-     setShow(!show);
-   };
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+    setShow(!show);
+  };
   const handleGLogin = () => {
     GoogleLogin()
       .then((result) => {
@@ -22,10 +21,10 @@ const Login = () => {
         console.log(user);
         setUser(user);
         toast.success("Successfully Logged In With Google");
-        navigate(`${location.state ? location.state : "/"}`);
+        navigate(`${location.state || location.state?.from ? location.state : "/"}`);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         toast.error("Something Went Wrong. Please Try Again");
       });
   };
@@ -34,24 +33,26 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-      signIn(email, password)
+    signIn(email, password)
       .then(() => {
-        navigate(`${location.state ? location.state : "/"}`);
+        navigate(
+          `${location.state || location.state?.from ? location.state : "/"}`
+        );
       })
-        .catch(() => {
-          toast.error("Email or Password doesn't Match, Please Try again");
-          e.target.reset()
-    })
+      .catch(() => {
+        toast.error("Email or Password doesn't Match, Please Try again");
+        e.target.reset();
+      });
   };
   //demo login
   const handleDemoSignIn = () => {
     const email = "demo@learn-hub.com";
     const password = "@learnHub";
-      signIn(email, password)
-      .then(() => {
-        navigate(`${location.state ? location.state : "/"}`);
-      })
+    signIn(email, password).then(() => {
+      navigate(`${location.state ? location.state : "/"}`);
+    });
   };
+  console.log(location);
 
   return (
     <div className="container mx-auto py-10 max-w-md">

@@ -29,7 +29,7 @@ const MyProfile = () => {
   });
 
   // Update profile mutation
-  const { mutate: updateProfile, isPending } = useMutation({
+  const { mutate: updateProfile, isLoading } = useMutation({
     mutationFn: async (updatedData) => {
       await updateUserProfile(updatedData.name, updatedData.photoURL);
       return await axiosSecure.patch(`/user/${user.email}`, updatedData);
@@ -205,10 +205,10 @@ const MyProfile = () => {
               <div className="flex gap-2 pt-4">
                 <button
                   type="submit"
-                  disabled={isPending}
+                  disabled={isLoading}
                   className="btn btn-indigo flex-1"
                 >
-                  {isPending ? "Saving..." : "Save Changes"}
+                  {isLoading ? "Saving..." : "Save Changes"}
                 </button>
                 <button
                   type="button"
