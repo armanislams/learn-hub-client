@@ -5,6 +5,7 @@ import { AuthContext } from "../Provider/AuthContext";
 import { toast } from "react-toastify";
 import useTitle from "../hooks/useTitle";
 import { Eye } from "lucide";
+import useAxios from "../hooks/UseAxios";
 
 const Register = () => {
     useTitle('Register')
@@ -12,8 +13,11 @@ const Register = () => {
     use(AuthContext);
   const navigate = useNavigate();
   const [show, setShow] = useState(false)
+  const AxiosInstance = useAxios()
 
   const regEx = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
+  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
 
   const handleShow = () => {
     setShow(!show)
@@ -41,9 +45,21 @@ const Register = () => {
     if (!regEx.test(password)) {
       toast.error("Please Check Your Password");
       return
+    } else if (!emailRegEx.test(email)){
+       toast.error("Please enter correct Email");
     } else {
+      //create to firebase
       createUser(email, password).then((result) => {
         const user = result.user;
+        //post to db
+        const dbUser = {
+          name,
+          email,
+          photo,
+          providerId: user.providerId
+        }
+        AxiosInstance.post('/users', dbUser)
+        
         updateUser({ displayName: name, photoURL: photo })
           .then(() => {
             setUser({ ...user, displayName: name, photoURL: photo });

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Provider/AuthContext";
 import useTitle from "../hooks/useTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
@@ -10,29 +10,40 @@ const MyProfile = () => {
   const axiosSecure = useAxiosSecure();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.displayName || "",
-    email: user?.email || "",
-    photoURL: user?.photoURL || "",
-    phone: "",
-    bio: "",
+    name: "",
+    email: "",
+    photoURL: "",
+    role: "",
   });
 
   // Fetch user profile data
-  const { data: profileData = {} } = useQuery({
+  const { data: profileData = {},refetch } = useQuery({
     queryKey: ["userProfile", user?.email],
     queryFn: async () => {
       if (!user?.email) return {};
-      const res = await axiosSecure.get(`/user/${user.email}`);
+      const res = await axiosSecure.get(`/users/${user.email}`);
       return res.data;
     },
     enabled: !!user?.email,
   });
 
+  // Sync formData with profileData when it loads
+  useEffect(() => {
+    if (profileData && Object.keys(profileData).length > 0) {
+      setFormData({
+        name: profileData.name || "",
+        email: profileData.email || "",
+        photoURL: profileData.photoURL || "",
+        role: profileData.role || "",
+      });
+    }
+  }, [profileData]);
+
   // Update profile mutation
   const { mutate: updateProfile, isLoading } = useMutation({
     mutationFn: async (updatedData) => {
       await updateUserProfile(updatedData.name, updatedData.photoURL);
-      return await axiosSecure.patch(`/user/${user.email}`, updatedData);
+      return await axiosSecure.patch(`/users/${user.email}`, updatedData);
     },
     onSuccess: () => {
       setIsEditing(false);
@@ -47,6 +58,8 @@ const MyProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateProfile(formData);
+    refetch()
+
   };
 
   return (
@@ -124,13 +137,10 @@ const MyProfile = () => {
                   <p className="font-semibold">{formData.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Phone</p>
-                  <p className="font-semibold">{formData.phone || "Not added"}</p>
+                  <p className="text-sm text-gray-500">Role</p>
+                  <p className="font-semibold">{formData.role || "Not added"}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Bio</p>
-                  <p className="font-semibold">{formData.bio || "Not added"}</p>
-                </div>
+               
               </div>
             </div>
           ) : (
@@ -174,32 +184,6 @@ const MyProfile = () => {
                   onChange={handleChange}
                   className="input input-bordered"
                 />
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Phone</span>
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="input input-bordered"
-                />
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Bio</span>
-                </label>
-                <textarea
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  className="textarea textarea-bordered"
-                  rows="4"
-                ></textarea>
               </div>
 
               <div className="flex gap-2 pt-4">
