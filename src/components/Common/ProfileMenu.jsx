@@ -17,10 +17,10 @@ const ProfileMenu = () => {
             className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
             <li>
-              <Link to={'/dashboard/my-profile'}>My Profile</Link>
+              <Link to={"/dashboard/my-profile"}>My Profile</Link>
             </li>
             <li>
-              <a>Item 2</a>
+              <Link to={"/dashboard/enrolled-course"}>My Enrolled Courses</Link>
             </li>
           </ul>
         </div>

@@ -1,62 +1,63 @@
-import React, { use, useEffect, useState } from "react";
-import useAxios from "../hooks/UseAxios";
+import React, { useContext } from "react";
 import { AuthContext } from "../Provider/AuthContext";
 import useTitle from "../hooks/useTitle";
 import { Link } from "react-router";
 import Loader from "../components/Common/Loader";
 import CourseCard from "../components/Cards/CourseCard";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import CourseGridSkeleton from "../components/Loading Skeletons/CourseGridSkeleton";
 
 const EnrolledCourses = () => {
-  useTitle('Enrolled Courses')
-  const AxiosInstance = useAxios();
-  const { user, loading,setLoading } = use(AuthContext);
-  const [courses, setCourses] = useState([]);
-  useEffect(() => {
-    const fetchEnrolledCourses = async () => {
-      try {
-        const email = user.email;
-        const res = await AxiosInstance.get(`/enrollments?user=${email}`);
-        const enrollments = res.data;
-        const coursesData = await Promise.all(
-          enrollments.map((enroll) =>
-            AxiosInstance.get(`/course/${enroll.courseId}`).then(
-              (res) => res.data
-            )
-          )
-        );
+  useTitle("Enrolled Courses");
+  const axiosSecure = useAxiosSecure();
+  const { user, loading } = useContext(AuthContext);
 
-        setCourses(coursesData);
-        
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEnrolledCourses();
-  }, [AxiosInstance, user?.email,setLoading]);
+  const {
+    data: enrolledCourses = [],
+    isLoading: enrolledLoading,
+    error,
+  } = useQuery({
+    queryKey: ["enrolledCourses", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return [];
+      // fetch enrollments then fetch course details for each enrollment
+      const res = await axiosSecure.get(`/enrollments?user=${user.email}`);
+      const enrollments = res.data || [];
+      const coursesData = await Promise.all(
+        enrollments.map((enroll) =>
+          axiosSecure.get(`/course/${enroll.courseId}`).then((r) => r.data)
+        )
+      );
+      return coursesData;
+    },
+    enabled: !!user?.email,
+  });
+
+  const isBusy = loading || enrolledLoading;
 
   return (
     <div className="container mx-auto py-10">
-      <h2 className="heading">My Enrolled Courses</h2>
+      <h2 className="heading mb-6">My Enrolled Courses</h2>
 
-      {loading ? (
-        <Loader />
-      ) : courses.length === 0 ? (
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="heading">
-            You May Not Enrolled to any Courses Yet. Check Out Our Courses or refresh again.
-          </h1>
+      {isBusy ? (
+        <CourseGridSkeleton count={2} />
+      ) : error ? (
+        <div className="text-center py-12">
+          <p className="text-lg text-red-500">Failed to load enrolled courses.</p>
+        </div>
+      ) : enrolledCourses.length === 0 ? (
+        <div className="flex flex-col justify-center items-center gap-6">
+          <h3 className="text-2xl font-semibold">You have not enrolled in any courses yet.</h3>
+          <p className="text-gray-600">Explore our catalog and enroll in courses you like.</p>
           <Link to={"/all-course"}>
-            <button className="bg-indigo-600 text-base-content px-4 py-2 rounded-lg hover:bg-indigo-700">
-              All Courses
-            </button>
+            <button className="btn btn-indigo">Browse All Courses</button>
           </Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {courses.map((course, i) => (
-            <CourseCard key={course._id + i} course={course} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {enrolledCourses.map((course) => (
+            <CourseCard key={course._id} course={course} />
           ))}
         </div>
       )}
