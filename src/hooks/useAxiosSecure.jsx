@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
-  // baseURL: "https://learn-hub-server-nine.vercel.app",
+  // baseURL: "http://localhost:5000",
+  baseURL: "https://learn-hub-server-nine.vercel.app",
 });
 
 const useAxiosSecure = () => {
@@ -27,14 +27,14 @@ const useAxiosSecure = () => {
       (error) => {
         console.log(error);
 
-        // const statusCode = error.response?.status;
-        // // const statusCode = error.status;
-        // if (statusCode == 401) {
-        //   navigate("/unauthorized");
-        // }
-        // if (statusCode == 403) {
-        //   navigate("/forbidden");
-        // }
+        const statusCode = error.response?.status;
+        // const statusCode = error.status;
+        if (statusCode == 401) {
+          navigate("/unauthorized");
+        }
+        if (statusCode == 403) {
+          navigate("/forbidden");
+        }
 
         return Promise.reject(error);
       }

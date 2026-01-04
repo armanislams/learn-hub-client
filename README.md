@@ -1,109 +1,114 @@
-# 🎓 LearnHub — Online Course Platform
+# 🎓 LearnHub — Intelligent E-Learning Platform
 
-LearnHub is a full-stack MERN-based e-learning website that allows users to browse, enroll, and manage online courses.  
-Instructors can add and manage their own courses, while students can explore and enroll in them easily.  
+![Project Banner](https://via.placeholder.com/1200x400?text=LearnHub+Dashboard)
 
-Built using **React**, **Express**, **MongoDB**, **TailwindCSS**, and **DaisyUI**.
+**LearnHub** is a comprehensive, full-stack Learning Management System (LMS) designed to bridge the gap between instructors and students. It offers a seamless experience for course creation, enrollment, and progress tracking, empowered by real-time analytics and secure role-based access.
+
+🔗 **Live Demo:** [https://learn-hub-f5d30.web.app](https://learn-hub-f5d30.web.app)
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-### 🌐 Public Area
-- View all available courses
-- Filter courses by category
-- View detailed course pages
-- Switch between light and dark themes (DaisyUI built-in)
+### 👤 User Experience
+*   **Role-Based Dashboards:** tailored interfaces for Students, Instructors, and Admin.
+*   **Secure Authentication:** Google and Email/Password login via Firebase.
+*   **Dynamic Theme:** Toggle between Light and Dark modes.
+*   **Responsive Design:** Fully optimized for mobile, tablet, and desktop.
 
-### 👨‍🏫 Instructor Dashboard
-- Add a new course with title, image, category, price, and description
-- Mark courses as **Featured**
-- View all courses added by the logged-in instructor
-- Dashboard stats and course overview
+### 📚 For Students
+*   **Interactive Dashboard:**
+    *   **Analytics:** Track learning hours, completed courses, and average ratings.
+    *   **Visualizations:** Enrollment timeline, category distribution, and rating charts using **Recharts**.
+*   **Smart Enrollment:** Easy course discovery and one-click enrollment.
+*   **Profile Management:** Editable profile with custom avatar and personal details.
+*   **My Courses:** view ongoing and completed courses with progress indicators.
 
-### 👩‍🎓 Student Area
-- Enroll in courses
-- View enrolled courses
-- Track progress
+### 👨‍🏫 For Instructors
+*   **Course Management:** Create, update, and manage courses with rich details (image, price, syllabus).
+*   **Student Tracking:** View student enrollments and monitor course popularity.
 
-### 💡 UI & Experience
-- Fully responsive design
-- Theme switcher using DaisyUI toggle
-- Toast notifications for actions
-- Clean, modern layout
+### 🛡️ For Admins
+*   **User Management:** detailed user lists with role management capabilities.
+*   **Content Oversight:** Tools to moderate courses and content.
+
+### 🔒 Security
+*   **Protected Routes:** Frontend route guards for User, Instructor, and Admin views.
+*   **Secure API:** JWT-based verification with secure Axios interceptors.
+*   **Error Handling:** Custom 401 (Unauthorized) and 403 (Forbidden) pages.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Core Technologies
-
-| Technology    | Purpose |
-|---------------|---------|
-| React         | The frontend JavaScript library for building the user interface. |
-| Vite          | The build tool and development server. |
-| Firebase      | Backend-as-a-Service, used specifically for Authentication. |
-| Tailwind CSS  | Utility-first CSS framework for styling and responsiveness. |
-| React Router  | For handling navigation and routing within the application. |
-
-### Additional Packages
-
-| Package       | Purpose |
-|---------------|---------|
-| react-toastify | For displaying toast notifications. |
-| react-icons   | For including various icons in the UI. |
-| Framer Motion | For motion in the home page|
-
----
-## ✨ Key Features
-
-- **Custom Authentication Flow**: Secure registration, login, and password reset functionalities.
-- **Social Sign-In**: Easy login using Google Popup Authentication.
-- **Protected Routes**: User-specific content (like the Profile page) is protected, requiring authentication for access.
-- **Context API for Global State**: User and authentication state are managed globally using React Context, accessible via a custom useAuth hook.
-- **Responsive UI**: Built with Tailwind CSS for a mobile-first, attractive design.
-- **Enhanced UX**: Uses react-toastify for clear, non-intrusive success and error notifications.
-- **Title Customization**: Uses a custom useTitle hook to dynamically set the page title based on the current route.
-
-
-## 📱 Features in Detail
-
-### Authentication
-
-- **Registration**: Users can create a new account with email and password.
-- **Login**: Existing users can sign in with their credentials.
-- **Password Reset**: Users can reset their password if forgotten.
-- **Google Sign-In**: Quick authentication using Google accounts.
-
-----
-
-## 🧩 Key Components
-
-- Dashboard – Displays instructor stats, total enrollments, featured courses
-- 
-- Add Course Page – Instructors can create a new course
-- 
-- All Courses Page – Lists all available courses
-- 
-- Auth Context – Manages Firebase authentication state globally
-- 
-- Theme Toggle – Uses DaisyUI’s built-in theme-controller toggle
+### Frontend
+*   **Framework:** [React 18](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+*   **State Management:** [TanStack Query](https://tanstack.com/query/latest) (Server state), Context API (Auth state)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/) + [DaisyUI](https://daisyui.com/)
+*   **Routing:** [React Router DOM](https://reactrouter.com/)
+*   **Data Visualization:** [Recharts](https://recharts.org/)
+*   **Authentication:** [Firebase Authentication](https://firebase.google.com/)
+*   **HTTP Client:** [Axios](https://axios-http.com/) (with Interceptors)
+*   **Notifications:** [React Hot Toast](https://react-hot-toast.com/) & React Toastify
 
 ---
 
-## 🌐 Live Demo
+## ⚙️ Local Setup
 
-| Environment | URL |
-|-------------|-----|
-| Live Site   | https://learn-hub-f5d30.web.app/
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/armanislams/learn-hub-client.git
+    cd learn-hub-client
+    ```
 
-## 🧾 License
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-This project is licensed under the MIT License.
+3.  **Environment Configuration:**
+    Create a `.env.local` file in the root directory and add your Firebase config keys:
+    ```env
+    VITE_apiKey=your_api_key
+    VITE_authDomain=your_auth_domain
+    VITE_projectId=your_project_id
+    VITE_storageBucket=your_storage_bucket
+    VITE_messagingSenderId=your_messaging_sender_id
+    VITE_appId=your_app_id
+    ```
 
-## 🧑‍💻 Author
+4.  **Run the application:**
+    ```bash
+    npm run dev
+    ```
 
-- Arman Islam
-- 📧 Email: [email@armanislam.me]
-- 🌐 Portfolio: [armanislam.me]
-- 💼 GitHub: https://github.com/armanislams
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+│   ├── Common/     # Shared components (Navbar, Footer, Loaders)
+│   ├── Dashboard/  # Dashboard-specific widgets and charts
+│   └── Home/       # Landing page sections
+├── hooks/          # Custom Hooks (useAuth, useAxiosSecure, useRole)
+├── Layout/         # Main layout wrappers (Main, Dashboard)
+├── pages/          # Application views
+│   ├── AdminPages/ # Admin-only routes
+│   ├── Common/     # Shared pages (Login, Register, Errors)
+│   └── Instructor/ # Instructor-specific views
+├── Provider/       # Context Providers (AuthProvider)
+└── Routes/         # Router configuration (PrivateRoutes, AdminRoute)
+```
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Author
+**Arman Islam**
+- 🌐 [Portfolio](https://armanislam.me)
+- 💼 [LinkedIn](https://linkedin.com/in/armanislams)
+- 🐙 [GitHub](https://github.com/armanislams)

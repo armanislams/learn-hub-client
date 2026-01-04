@@ -21,6 +21,8 @@ import AboutUs from "../pages/Common/AboutUs";
 import PrivateRoute from "../ProtectedRoutes/PrivateRoute";
 import AllUsers from "../pages/AdminPages/AllUsers";
 import AllCourseAdmin from "../pages/AdminPages/AllCourseAdmin";
+import Unauthorized from "../pages/Common/Unauthorized";
+import Forbidden from "../pages/Common/Forbidden";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +62,14 @@ const router = createBrowserRouter([
       {
         path: "/course-details/:id",
         Component: CourseDetails
+      },
+      {
+        path: "/unauthorized",
+        Component: Unauthorized
+      },
+      {
+        path: "/forbidden",
+        Component: Forbidden
       },
       {
         path: "/update-course/:id",
