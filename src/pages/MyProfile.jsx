@@ -1,12 +1,12 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../Provider/AuthContext";
+import React, { useState, useEffect } from "react";
 import useTitle from "../hooks/useTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import useAuth from "../hooks/useAuth";
 
 const MyProfile = () => {
   useTitle("My Profile");
-  const { user, updateUserProfile } = useContext(AuthContext);
+  const { user, updateUserProfile } = useAuth()
   const axiosSecure = useAxiosSecure();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -120,12 +120,12 @@ const MyProfile = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Profile Information</h2>
-                <button
+                {/* <button
                   onClick={() => setIsEditing(true)}
                   className="btn btn-sm btn-indigo"
                 >
                   Edit Profile
-                </button>
+                </button> */}
               </div>
               <div className="space-y-3">
                 <div>

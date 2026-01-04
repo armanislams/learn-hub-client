@@ -2,7 +2,6 @@ import React from "react";
 import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 import ErrorPage from "../pages/ErrorPage";
-import PrivateRoute from "../Provider/PrivateRoute";
 import AllCourses from "../pages/AllCourses";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -19,6 +18,7 @@ import Loader from "../components/Common/Loader";
 import MyProfile from "../pages/MyProfile";
 import FAQ from "../pages/FAQ";
 import AboutUs from "../pages/AboutUs";
+import PrivateRoute from "../ProtectedRoutes/PrivateRoute";
 
 const router = createBrowserRouter([
   {

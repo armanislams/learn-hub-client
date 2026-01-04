@@ -1,168 +1,179 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../Provider/AuthContext";
+import { Link, useNavigate, useLocation } from "react-router";
 import { toast } from "react-toastify";
 import useTitle from "../hooks/useTitle";
-import { Eye } from "lucide";
 import useAxios from "../hooks/UseAxios";
+import useAuth from "../hooks/useAuth";
+import GoogleLoginBtn from "../components/Common/GoogleLoginBtn";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
-    useTitle('Register')
-  const { createUser, setUser, updateUser, GoogleLogin } =
-    use(AuthContext);
+  useTitle("Register");
+  const { createUser, setUser, updateUser } = useAuth();
   const navigate = useNavigate();
-  const [show, setShow] = useState(false)
-  const AxiosInstance = useAxios()
+  const location = useLocation();
+  const [show, setShow] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const AxiosInstance = useAxios();
 
-  const regEx = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
-  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+  const handleShow = () => setShow((s) => !s);
 
-  const handleShow = () => {
-    setShow(!show)
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    reset,
+  } = useForm();
 
-  const handleGLogin = () => {
-    GoogleLogin()
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        setUser(user);
-        toast.success("Successfully Logged In With Google");
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch(() => {
-        toast.error("Something Went Wrong. Please Try Again");
-      });
-  };
-  const handleCreateUser = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const photo = e.target.photo.value;
-    if (!regEx.test(password)) {
-      toast.error("Please Check Your Password");
-      return
-    } else if (!emailRegEx.test(email)){
-       toast.error("Please enter correct Email");
-    } else {
-      //create to firebase
-      createUser(email, password).then((result) => {
-        const user = result.user;
-        //post to db
-        const dbUser = {
-          name,
-          email,
-          photo,
-          providerId: user.providerId
-        }
-        AxiosInstance.post('/users', dbUser)
-        
-        updateUser({ displayName: name, photoURL: photo })
-          .then(() => {
-            setUser({ ...user, displayName: name, photoURL: photo });
-        navigate(`${location.state ? location.state : "/"}`);
-          })
-          .catch(() => {
-            toast.error("Something Went Wrong, Please try again");
-          });
-      });
+  const from = location.state || location.state?.from || "/";
+
+  const onSubmit = async (values) => {
+    const { name, email, password, photo } = values;
+    setSubmitting(true);
+    try {
+      const result = await createUser(email, password);
+      const user = result.user;
+
+      // Persist to backend (best-effort)
+      try {
+        await AxiosInstance.post("/users", { name, email, photo, providerId: user?.providerId });
+      } catch (dbErr) {
+        console.error("Failed to save user to DB", dbErr);
+      }
+
+      // Update displayName and photo
+      try {
+        await updateUser({ displayName: name, photoURL: photo });
+        setUser({ ...user, displayName: name, photoURL: photo });
+      } catch (updateErr) {
+        console.error("Failed to update user profile", updateErr);
+      }
+
+      toast.success("Registration successful");
+      reset();
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error(err);
+      const msg = err?.message || "Registration failed. Please try again.";
+      toast.error(msg);
+      setError("email", { type: "server", message: msg });
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <div className="container mx-auto py-10 max-w-md">
       <form
-        onSubmit={handleCreateUser}
+        onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 bg-white p-6 rounded shadow"
+        noValidate
       >
         <h2 className="text-2xl font-bold mb-6 text-black text-center">
           Register
         </h2>
-        <input
-          placeholder="Name"
-          name="name"
-          className="p-2 border w-full text-black"
-          required
-        />
-        <input
-          placeholder="Email"
-          name="email"
-          className="p-2 border w-full text-black"
-          required
-        />
-        <input
-          placeholder="Photo URL"
-          name="photo"
-          className="p-2 border w-full text-black"
-        />
+
+        <div>
+          <input
+            placeholder="Full name"
+            {...register("name", { required: "Name is required" })}
+            className={`p-2 border w-full text-black ${
+              errors.name ? "border-red-500" : ""
+            }`}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div>
+          <input
+            placeholder="Email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+                message: "Enter a valid email",
+              },
+            })}
+            className={`p-2 border w-full text-black ${
+              errors.email ? "border-red-500" : ""
+            }`}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <input
+            placeholder="Photo URL (optional)"
+            {...register("photo", {
+              pattern: {
+                value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))?$/i,
+                message: "Enter a valid image URL",
+              },
+            })}
+            className={`p-2 border w-full text-black ${
+              errors.photo ? "border-red-500" : ""
+            }`}
+          />
+          {errors.photo && (
+            <p className="text-sm text-red-500 mt-1">{errors.photo.message}</p>
+          )}
+        </div>
+
         <div className="relative">
           <input
             type={show ? "text" : "password"}
             placeholder="Password"
-            name="password"
-            className="p-2 border w-full text-black"
-            required
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value: /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/,
+                message:
+                  "Must include uppercase & lowercase letters and be at least 6 characters",
+              },
+            })}
+            className={`p-2 border w-full text-black ${
+              errors.password ? "border-red-500" : ""
+            }`}
           />
           <div
             onClick={handleShow}
             className="hover:cursor-pointer absolute top-3 right-3 text-black"
+            role="button"
+            tabIndex={0}
+            aria-label={show ? "Hide password" : "Show password"}
           >
             {show ? <FaEyeSlash /> : <FaEye />}
           </div>
         </div>
-        <p className="text-xs text-black">
-          - Must have an Uppercase & Lowercase letter in the password <br />-
-          Length must be at least 6 characters
-        </p>
+        {errors.password && (
+          <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+        )}
+
+
         <button
           type="submit"
+          disabled={submitting}
           className="bg-indigo-600 text-white px-4 py-2 font-semibold rounded w-full"
         >
-          Register
+          {submitting ? "Creating account..." : "Register"}
         </button>
-        {/* Google */}
-        <button
-          onClick={handleGLogin}
-          className="btn  dark:bg-indigo-500 dark:text-white w-full border-[#e5e5e5]"
-        >
-          <svg
-            aria-label="Google logo"
-            width="16"
-            height="16"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <g>
-              <path d="m0 0H512V512H0" fill="#fff"></path>
-              <path
-                fill="#34a853"
-                d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-              ></path>
-              <path
-                fill="#4285f4"
-                d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-              ></path>
-              <path
-                fill="#fbbc02"
-                d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-              ></path>
-              <path
-                fill="#ea4335"
-                d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-              ></path>
-            </g>
-          </svg>
-          Login with Google
-        </button>
-      <div className="text-black text-sm">
-        Already have an account?{" "}
-        <Link to="/login" className=" text-indigo-600">
-          Login
-        </Link>
-      </div>
+
+        {/* Google sign-in */}
+        <GoogleLoginBtn />
+
+        <div className="text-black text-sm">
+          Already have an account?{" "}
+          <Link to="/login" className=" text-indigo-600">
+            Login
+          </Link>
+        </div>
       </form>
     </div>
   );

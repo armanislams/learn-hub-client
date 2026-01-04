@@ -1,6 +1,6 @@
 import React, { use } from "react";
 import { Navigate, useLocation } from "react-router";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Provider/AuthContext";
 import Loader from "../components/Common/Loader";
 
 const PrivateRoute = ({ children }) => {
