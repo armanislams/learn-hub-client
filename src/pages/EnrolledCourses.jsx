@@ -41,7 +41,7 @@ const EnrolledCourses = () => {
       <h2 className="heading mb-6">My Enrolled Courses</h2>
 
       {isBusy ? (
-        <CourseGridSkeleton count={2} />
+        <CourseGridSkeleton count={4} />
       ) : error ? (
         <div className="text-center py-12">
           <p className="text-lg text-red-500">Failed to load enrolled courses.</p>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import useAxios from "../hooks/UseAxios";
 import { toast } from "react-toastify";
 import useTitle from "../hooks/useTitle";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const UpdateCourse = () => {
     useTitle('Update Course')
-    const { id } = useParams();
-  const AxiosInstance = useAxios();
+  const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
   
@@ -26,9 +26,9 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await AxiosInstance.get(`/course/${id}`);
+        const res = await axiosSecure.get(`/course/${id}`);
         setCourse(res.data);
-        const category = await AxiosInstance.get('/course')
+        const category = await axiosSecure.get('/course')
         const uniqueCategories = [...new Set(category.data.map((c) => c.category))];
         setCategories(uniqueCategories);
       } catch (err) {
@@ -37,7 +37,7 @@ const UpdateCourse = () => {
       }
     };
     fetchCourse();
-  }, [AxiosInstance, id]);
+  }, [axiosSecure, id]);
   
 
   // ✅ Handle input change
@@ -52,7 +52,7 @@ const UpdateCourse = () => {
 
     setSaving(true);
     try {
-      await AxiosInstance.patch(`/course/${id}`, course);
+      await axiosSecure.patch(`/course/${id}`, course);
       toast.success("Course updated successfully!");
       navigate(`/course-details/${id}`);
     } catch (err) {
