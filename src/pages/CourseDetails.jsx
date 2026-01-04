@@ -26,6 +26,7 @@ import {
   Cell,
 } from "recharts";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const CourseDetails = () => {
   useTitle("Course Details");
@@ -33,7 +34,7 @@ const CourseDetails = () => {
   const { user, loading } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
-  const AxiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   console.log(location);
 
@@ -45,7 +46,7 @@ const CourseDetails = () => {
   } = useQuery({
     queryKey: ["course", id],
     queryFn: async () => {
-      const res = await AxiosInstance.get(`/course/${id}`);
+      const res = await axiosSecure.get(`/course/${id}`);
       return res.data;
     },
     // { enabled: !!id }
@@ -56,7 +57,7 @@ const CourseDetails = () => {
     queryKey: ["enrollment", id, user?.email],
     queryFn: async () => {
       if (!user?.email) return { enrolled: false };
-      const res = await AxiosInstance.get(`/enrollments/${id}`, {
+      const res = await axiosSecure.get(`/enrollments/${id}`, {
         params: { email: user.email },
       });
       return res.data;
@@ -69,7 +70,7 @@ const CourseDetails = () => {
   // Mutation: enroll
   const enrollMutation = useMutation({
     mutationFn: async () => {
-      return AxiosInstance.post("/enrollments", {
+      return axiosSecure.post("/enrollments", {
         courseId: id,
         email: user.email,
       });
@@ -87,7 +88,7 @@ const CourseDetails = () => {
   // Mutation: delete course
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      return AxiosInstance.delete(`/course/${id}`);
+      return axiosSecure.delete(`/course/${id}`);
     },
     onSuccess: () => {
       toast.success("Course deleted successfully!");
@@ -113,33 +114,6 @@ const CourseDetails = () => {
     enrollMutation.mutate();
   };
 
-  // Delete course
-  const handleDelete = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This will permanently delete the course.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    });
-
-    if (result.isConfirmed) {
-      if (!course?._id) {
-        toast.info("Cannot delete this course.");
-        return;
-      }
-
-      deleteMutation.mutate();
-    }
-  };
-
-  // Update course
-  const handleUpdate = () => {
-    navigate(`/update-course/${id}`);
-  };
-  //
 
   if (loading || courseLoading || enrollmentLoading) return <Loader />;
   if (courseError)
@@ -266,30 +240,7 @@ const CourseDetails = () => {
                     : "Enroll Now"}
                 </button>
 
-                <button
-                  onClick={handleUpdate}
-                  disabled={!course?._id}
-                  className={`w-full text-white py-2 rounded transition font-medium ${
-                    !course?._id
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-yellow-500 hover:bg-yellow-600"
-                  }`}
-                >
-                  Edit Course
-                </button>
-
-                <button
-                  onClick={handleDelete}
-                  disabled={!course?._id}
-                  className={`w-full text-white py-2 rounded transition font-medium ${
-                    !course?._id
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-red-600 hover:bg-red-700"
-                  }`}
-                >
-                  Delete Course
-                </button>
-              </>
+                </>
             )}
           </div>
         </aside>

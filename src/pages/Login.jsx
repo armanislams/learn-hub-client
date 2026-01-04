@@ -44,9 +44,16 @@ const Login = () => {
     }
   };
   //demo login
-  const handleDemoSignIn = () => {
+  const handleDemoSignInUser = () => {
     const email = "demo@learn-hub.com";
     const password = "@learnHub";
+    signIn(email, password).then(() => {
+      navigate(`${location.state ? location.state : "/"}`);
+    });
+  };
+  const handleDemoSignInAdmin = () => {
+    const email = "admin@learn-hub.com";
+    const password = "@adminLearnhub";
     signIn(email, password).then(() => {
       navigate(`${location.state ? location.state : "/"}`);
     });
@@ -113,11 +120,18 @@ const Login = () => {
         {/* google login */}
         <GoogleLoginBtn/>
         <button
-          onClick={handleDemoSignIn}
+          onClick={handleDemoSignInUser}
           type="submit"
           className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded w-full"
         >
           Demo User Login
+        </button>
+        <button
+          onClick={handleDemoSignInAdmin}
+          type="submit"
+          className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded w-full"
+        >
+          Demo Admin Login
         </button>
         <div className="text-black text-sm">
           Don't have an account?{" "}

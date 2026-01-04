@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
 import useAxiosSecure from "../hooks/useAxiosSecure";
@@ -19,10 +19,11 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
   useTitle("Dashboard");
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ const Dashboard = () => {
     queryKey: ["userProfile", user?.email],
     queryFn: async () => {
       if (!user?.email) return {};
-      const res = await axiosSecure.get(`/user/${user.email}`);
+      const res = await axiosSecure.get(`/users/${user.email}`);
       return res.data;
     },
     enabled: !!user?.email,
@@ -58,10 +59,6 @@ const Dashboard = () => {
     },
     enabled: !!user?.email,
   });
-
-  if (!user) {
-    return <p>Please log in to access dashboard.</p>;
-  }
 
   // Sample chart data
   const enrollmentData = [

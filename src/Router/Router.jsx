@@ -19,6 +19,8 @@ import MyProfile from "../pages/MyProfile";
 import FAQ from "../pages/FAQ";
 import AboutUs from "../pages/AboutUs";
 import PrivateRoute from "../ProtectedRoutes/PrivateRoute";
+import AllUsers from "../pages/AllUsers";
+import AllCourse from "../pages/AdminPages/AllCourse";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +99,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/my-profile",
        Component: MyProfile
+      },
+      {
+        path: "/dashboard/all-users",
+       Component: AllUsers
+      },
+      {
+        path: "/dashboard/all-course",
+       Component: AllCourse
       },
     ],
   },

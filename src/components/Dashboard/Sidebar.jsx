@@ -1,9 +1,17 @@
 import React from "react";
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaBook, FaHome, FaUser, FaUsers } from "react-icons/fa";
 import { MdOutlineBookmarkAdd, MdOutlineBookmarkAdded, MdOutlineBookmarkBorder } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router";
+import useRole from "../../hooks/useRole";
+import Loader from "../Common/Loader";
 
 const Sidebar = () => {
+  const { role, roleLoading } = useRole();
+
+  if (roleLoading) {
+    return <Loader />;
+  }
+    
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -62,52 +70,106 @@ const Sidebar = () => {
                 <span className="is-drawer-close:hidden">Homepage</span>
               </NavLink>
             </li>
-            {/* enrolled course */}
-            <li>
-              <NavLink
-                to={"/dashboard/enrolled-course"}
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Enrolled Course"
-              >
-                <MdOutlineBookmarkAdded className="my-1.5 inline-block size-5" />
-                <span className="is-drawer-close:hidden">
-                  My Enrolled Course
-                </span>
-              </NavLink>
-            </li>
-            {/* Add a course */}
-            <li>
-              <NavLink
-                to={"/dashboard/add-course"}
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Add a Course"
-              >
-                <MdOutlineBookmarkAdd className="my-1.5 inline-block size-5" />
-                <span className="is-drawer-close:hidden">Add a Course</span>
-              </NavLink>
-            </li>
-            {/* my added course */}
-            <li>
-              <NavLink
-                to={"/dashboard/my-added-course"}
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Added Course"
-              >
-                <MdOutlineBookmarkBorder className="my-1.5 inline-block size-5" />
-                <span className="is-drawer-close:hidden">My Added Course</span>
-              </NavLink>
-            </li>
-            {/* my profile */}
-            <li>
-              <NavLink
-                to={"/dashboard/my-profile"}
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Profile"
-              >
-                <FaUser className="my-1.5 inline-block size-5" />
-                <span className="is-drawer-close:hidden">My Profile</span>
-              </NavLink>
-            </li>
+            {/* render all links for admin, limited set for normal users */}
+            {role === "admin" ? (
+              <>
+                <li>
+                  <NavLink
+                    to={"/dashboard/enrolled-course"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Enrolled Course"
+                  >
+                    <MdOutlineBookmarkAdded className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">
+                      My Enrolled Course
+                    </span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/add-course"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Add a Course"
+                  >
+                    <MdOutlineBookmarkAdd className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">Add a Course</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/my-added-course"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Added Course"
+                  >
+                    <MdOutlineBookmarkBorder className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">
+                      My Added Course
+                    </span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/all-users"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="All Users"
+                  >
+                    <FaUsers className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">All Users</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/all-course"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="All Course"
+                  >
+                    <FaBook className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">All Course</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/my-profile"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Profile"
+                  >
+                    <FaUser className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">My Profile</span>
+                  </NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavLink
+                    to={"/dashboard/enrolled-course"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Enrolled Course"
+                  >
+                    <MdOutlineBookmarkAdded className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">
+                      My Enrolled Course
+                    </span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to={"/dashboard/my-profile"}
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Profile"
+                  >
+                    <FaUser className="my-1.5 inline-block size-5" />
+                    <span className="is-drawer-close:hidden">My Profile</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
