@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router";
 import { toast } from "react-toastify";
-import useTitle from "../hooks/useTitle";
-import useAxios from "../hooks/UseAxios";
-import useAuth from "../hooks/useAuth";
-import GoogleLoginBtn from "../components/Common/GoogleLoginBtn";
+import useAuth from "../../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import useTitle from "../../../hooks/useTitle";
+import useAxios from "../../../hooks/UseAxios";
 
 const Register = () => {
   useTitle("Register");

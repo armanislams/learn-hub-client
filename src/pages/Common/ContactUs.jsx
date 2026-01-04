@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useTitle from "../hooks/useTitle";
+import useTitle from "../../hooks/useTitle";
 
 const ContactUs = () => {
   useTitle("Contact Us");

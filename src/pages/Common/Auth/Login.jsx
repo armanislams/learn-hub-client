@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router";
 import { toast } from "react-toastify";
-import useTitle from "../hooks/useTitle";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import useAuth from "../hooks/useAuth";
-import GoogleLoginBtn from "../components/Common/GoogleLoginBtn";
 import { useForm } from "react-hook-form";
+import useTitle from "../../../hooks/useTitle";
+import useAuth from "../../../hooks/useAuth";
+import GoogleLoginBtn from "../../../components/Common/GoogleLoginBtn";
 
 const Login = () => {
   useTitle("Login");
@@ -118,7 +118,7 @@ const Login = () => {
           </button>
         </form>
         {/* google login */}
-        <GoogleLoginBtn/>
+        <GoogleLoginBtn />
         <button
           onClick={handleDemoSignInUser}
           type="submit"

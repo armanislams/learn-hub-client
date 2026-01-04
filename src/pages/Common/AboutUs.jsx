@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
-import useTitle from '../hooks/useTitle';
+import useTitle from '../../hooks/useTitle';
 
 const AboutUs = () => {
   useTitle('About Us');

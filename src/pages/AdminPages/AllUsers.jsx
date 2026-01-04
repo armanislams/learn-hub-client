@@ -1,7 +1,7 @@
 import React from 'react';
-import useAxiosSecure from '../hooks/useAxiosSecure';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import Loader from '../components/Common/Loader';
+import Loader from '../../components/Common/Loader';
 import { FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';

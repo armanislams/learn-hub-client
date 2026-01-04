@@ -1,9 +1,9 @@
 import React, { use, useState } from "react";
-import { AuthContext } from "../Provider/AuthContext";
-import useAxios from "../hooks/UseAxios";
+import { AuthContext } from "../../Provider/AuthContext";
+import useAxios from "../../hooks/UseAxios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import useTitle from "../hooks/useTitle";
+import useTitle from "../../hooks/useTitle";
 
 const AddCourse = () => {
   useTitle('Add Course')
