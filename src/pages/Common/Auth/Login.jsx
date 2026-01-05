@@ -45,15 +45,15 @@ const Login = () => {
   };
   //demo login
   const handleDemoSignInUser = () => {
-    const email = "demo@learn-hub.com";
-    const password = "@learnHub";
+    const email = import.meta.env.VITE_DEMO_USER;
+    const password = import.meta.env.VITE_DEMO_USER_PASS;
     signIn(email, password).then(() => {
       navigate(`${location.state ? location.state : "/"}`);
     });
-  };
+  };  
   const handleDemoSignInAdmin = () => {
-    const email = "admin@learn-hub.com";
-    const password = "@adminLearnhub";
+    const email = import.meta.env.VITE_DEMO_ADMIN;
+    const password = import.meta.env.VITE_DEMO_ADMIN_PASS;
     signIn(email, password).then(() => {
       navigate(`${location.state ? location.state : "/"}`);
     });
