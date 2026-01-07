@@ -1,8 +1,6 @@
 # 🎓 LearnHub — Intelligent E-Learning Platform
 
-![Project Banner 1](/public/learn-hub-1.png)
-![Project Banner 2](/public/learn-hub-2.png)
-![Project Banner 3](/public/learn-hub-3.png)
+![Project Banner GIF](/public/ezgif.com-optimize.gif)
 
 **LearnHub** is a comprehensive, full-stack Learning Management System (LMS) designed to bridge the gap between instructors and students. It offers a seamless experience for course creation, enrollment, and progress tracking, empowered by real-time analytics and secure role-based access.
 
